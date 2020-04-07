@@ -1,0 +1,54 @@
+.content {
+    font-family: Calibri;
+    font-size: 32px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    border: 1.5px solid rgb(220,220,220);
+    border-radius: 15px;
+    width: 15%;
+    background-color: rgb(245,245,245);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+}
+
+.el {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid rgb(220,220,220);
+    transition: 0.1s;
+}
+
+.el:hover {
+    background-color: rgb(220,220,220);
+    transition: 0.15s;
+    cursor: pointer;
+}
+
+.first {
+    border-top-left-radius: 13px;
+    border-top-right-radius: 13px;
+}
+
+.end {
+    border-bottom: none;
+    border-bottom-left-radius: 13px;
+    border-bottom-right-radius: 13px;
+}
+
+.a {
+    margin: 10%;
+    font-family: Calibri;
+    font-size: 72px;
+}
+
+span {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    margin: 5% 20% 5% 20%;
+    user-select: none;
+}

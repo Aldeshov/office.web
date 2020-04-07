@@ -1,0 +1,34 @@
+<main>
+    <h2> Log in</h2>
+    <form class="input">
+        <table class="login">
+            <tr>
+                <td>
+                    <label class="labeltext">User</label>
+                </td>
+                <td>
+                    <input  type="text" id="inname" class="input" oninput="this.style.borderBottomColor = 'rgb(180,180,180)'" required maxlength="32" placeholder="User"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="labeltext">Password</label>
+                </td>
+                <td>
+                    <input type="password" id="inpassword" class="input" oninput="this.style.borderBottomColor = 'rgb(180,180,180)'" required maxlength="32" placeholder="Password"/>
+                </td>
+            </tr>
+            <tr class="e">
+                <td class="end">
+                    <label class="container">Remember me
+                        <input id="save" type="checkbox">
+                        <span class="checkmark"></span>
+                      </label>
+                </td>
+                <td class="end">
+                    <input type="button" class="input button" value="Log in" (click)="go()">
+                </td>
+            </tr>
+        </table>
+    </form>
+</main>

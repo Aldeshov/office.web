@@ -1,0 +1,50 @@
+<header>
+    <div class="btn" (click)="modify()">
+        <div>
+            <span class="ml before1" id="x1"></span>
+            <span class="ml before" id="x"></span>
+            <span class="ml before2" id="x2"></span>
+        </div>
+    </div>
+    <div class="right">
+
+        <div  class="header-link">
+            <span>Links</span>
+        </div>
+
+        <div class="header-link">
+            <span>About us</span>
+        </div>
+
+        <div class="header-link">
+            <span>Anothers</span>
+        </div>
+    
+        <div class="right-menu">
+            <input type="text" class="search" placeholder="Search">
+            <div class="search-btn" (click)="search()">
+                <span>go</span>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="menu hidden" id="menu">
+    <div class="menu-contents">
+        <div class="menu-content" (click)="mainmenu()">
+            <span class="section">Main Menu</span>
+        </div>
+        <div class="menu-content" (click)="alert('Not finished!')">
+            <span class="section">Attestation</span>
+        </div>
+        <div class="menu-content" (click)="alert('Not finished!')">
+            <span class="section">Courses</span>
+        </div>
+        <div class="menu-content" (click)="files()">
+            <span class="section">Files</span>
+        </div>
+        <div class="menu-content" (click)="logout()">
+            <span class="section">Log out</span>
+        </div>
+    </div>
+</div>
