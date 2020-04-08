@@ -114,11 +114,11 @@ export class CourseFilesComponent implements OnInit {
     {
       if(obj.type == "#/Dir")
       {
-        this.userService.getFiles(this.path + "/" + obj.name).subscribe(files => this.get(files));
-        if(!this.path.endsWith(obj.name))
+        this.userService.getFiles(this.path + "/" + obj.id).subscribe(files => this.get(files));
+        if(!this.path.endsWith(obj.id))
         {
-          this.path = this.path + "/" + obj.name;
-          this.title.push({title: obj.name, path: this.path});
+          this.path = this.path + "/" + obj.id;
+          this.title.push({title: obj.id, path: this.path});
         }
       }
       else
@@ -135,14 +135,20 @@ export class CourseFilesComponent implements OnInit {
     for(let i = 0; i < files.length; i++){
       if(this.path == files[i].path)
       {
-        let temp: String = "";
-        for(let j = 0; j < files[i].name.length; j++){
-          temp += files[i].name[files[i].name.length - j - 1];
+        let type: string = "";
+        if(files[i].name.indexOf(".") != -1)
+        {
+          for(let j = 0; j < files[i].name.length; j++){
+            if(files[i].name[files[i].name.length - j - 1] == '.'){
+              break;
+            }
+            type += files[i].name[files[i].name.length - j - 1];
+          }
         }
 
-        let icon = "../../assets/images/types/unknown.ico";
+        type = type.split("").reverse().join("");
 
-        let type = files[i].name.substring(files[i].name.length - temp.indexOf("."), files[i].name.length);
+        let icon = "../../assets/images/types/unknown.ico";
 
         if(type == "doc" || type == "docx")
         {
@@ -174,7 +180,13 @@ export class CourseFilesComponent implements OnInit {
           icon = "../../assets/images/types/rar.png";
         }
 
-        this.objects.push({id: files[i].id, name: files[i].name, type: files[i].name.substring(files[i].name.length - temp.indexOf("."), files[i].name.length), ico: icon});
+        let temp = files[i].name;
+        
+        if(temp.length > 15)
+        {
+          temp = temp.substr(0, 7) + "..." + temp.substr(temp.length - 4, 4);
+        }
+        this.objects.push({id: files[i].id, name: temp, type: type, ico: icon});
       }
       else
       {
@@ -193,8 +205,13 @@ export class CourseFilesComponent implements OnInit {
         }
         if(dirs.find(d => d == temp) == undefined)
         {
-          this.objects.push({id: "#ID" + temp, name: temp, type: "#/Dir", ico: "../../assets/images/types/folder.ico"});
           dirs.push(temp);
+          let id = temp;
+          if(temp.length > 15)
+          {
+            temp = temp.substr(0, 7) + "..." + temp.substr(temp.length - 4, 4);
+          }
+          this.objects.push({id: id, name: temp, type: "#/Dir", ico: "../../assets/images/types/folder.ico"});
         }
       }
     }
