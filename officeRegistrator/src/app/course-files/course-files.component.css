@@ -27,12 +27,12 @@ main {
     align-items: center;
     justify-content: space-around;
     padding: 5%;
-    color: white;
+    /* color: white; */
     min-width: 50%;
 }
 
 .obj:hover {
-    background-color: #343536;
+    /* background-color: #343536; */
     border: 1px solid rgb(180, 180, 180);
     transition: 0.3s;
     cursor: pointer;

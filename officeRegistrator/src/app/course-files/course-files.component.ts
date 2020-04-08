@@ -34,8 +34,6 @@ export class CourseFilesComponent implements OnInit {
     {
       if(u.type == "Student")
       {
-        this.u = (<Student> u);
-
         for(let i = 0; i < (<Student> u).courses.length; i++)
         {
           this.objects.push({id: (<Student> u).courses[i].id, name: (<Student> u).courses[i].name, type: "#/Course", ico: "../../assets/images/types/course.ico"});
@@ -45,13 +43,32 @@ export class CourseFilesComponent implements OnInit {
       {
         if(u.type == "Teacher")
         {
-          this.u = (<Teacher> u);
+          this.userService.getTeacherFiles((<Teacher> u).id).subscribe(f => this.tcourses(f));
         }
       }
     }
     else
     {
       this.router.navigate(['']);
+    }
+  }
+
+  tcourses(f = []){
+    let dirs = [];
+    for(let i = 0; i < f.length; i++) {
+      let t = "";
+      for(let j = 1; j < f[i].path.length; j++){
+        if(f[i].path[j] == '/'){
+          break;
+        }
+        t += f[i].path[j];
+      }
+      if(dirs.find(o => o == t) == undefined){
+        dirs.push(t);
+        this.userService.getCourse(t).subscribe(c => {
+          this.objects.push({id: c.id, name: c.name, type: "#/Course", ico: "../../assets/images/types/course.ico"});
+      })
+      }
     }
   }
 

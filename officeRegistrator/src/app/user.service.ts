@@ -29,6 +29,10 @@ export class UserService {
     return this.http.get<News[]>(this.newsUrl).pipe(catchError(this.handleError<News[]>('newsUrl', [])));
   }
 
+  getCourse(id): Observable<Course> {
+    return this.http.get<Course>(`${this.coursesUrl}/${id}`).pipe(catchError(this.handleError<Course>('coursesUrl')));
+  }
+
   getCourses(): Observable<Course[]> {
     return this.http.get<Course[]>(this.coursesUrl).pipe(catchError(this.handleError<Course[]>('coursesUrl', [])));
   }
@@ -39,6 +43,10 @@ export class UserService {
 
   getTeacherCourses(teacherid: string): Observable<Course[]> {
     return this.http.get<Course[]>(this.coursesUrl).pipe(map(courses => courses.filter(c => c.teacher.id == teacherid),catchError(this.handleError<Course[]>('coursesUrl', []))))
+  }
+
+  getTeacherFiles(teacherid: string): Observable<CourseFile[]> {
+    return this.http.get<CourseFile[]>(`${this.filesUrl}/?teacher=${teacherid}`).pipe(catchError(this.handleError<CourseFile[]>('coursesUrl', [])));
   }
 
   private handleError<T> (operation = 'operation', result?: T) {

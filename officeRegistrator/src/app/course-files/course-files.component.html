@@ -1,5 +1,5 @@
 <app-header></app-header>
-<div class="content">
+<div [class.hidden]="u" class="content">
     <header>
         <div *ngFor="let t of title" (click)="go(t)" class="link">
             <span class="dir"> {{ t.title }} </span> / &nbsp;
