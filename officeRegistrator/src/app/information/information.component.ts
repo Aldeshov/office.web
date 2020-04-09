@@ -53,8 +53,8 @@ export class InformationComponent implements OnInit {
     if(u != null)
     {
       if(u.password == old){
-        u.password = p;
-        this.userService.changeUserPassword(u);
+        this.u.password = p;
+        this.userService.changeUserPassword(this.u);
         alert("Password changed!");
         (<HTMLInputElement> document.getElementById("new1")).value = "";
         (<HTMLInputElement> document.getElementById("new2")).value = "";
