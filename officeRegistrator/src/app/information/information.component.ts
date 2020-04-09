@@ -60,6 +60,10 @@ export class InformationComponent implements OnInit {
         (<HTMLInputElement> document.getElementById("new2")).value = "";
         (<HTMLInputElement> document.getElementById("old")).value = "";
       }
+      else
+      {
+        alert("Incorrect Old Password!");
+      }
     }
   }
 }
