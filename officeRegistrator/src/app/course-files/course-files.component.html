@@ -1,11 +1,11 @@
-<app-header></app-header>
-<div [class.hidden]="u" class="content">
+<app-header [u]="u"></app-header>
+<div [class.hidden]="u != null" class="content">
     <header>
         <div *ngFor="let t of title" (click)="go(t)" class="link">
             <span class="dir"> {{ t.title }} </span> &gt; &nbsp;
         </div>
     </header>
-    
+
     <main>
         <div *ngFor="let c of objects" class="obj" (click)="getFiles(c)">
             <div class="obj-type">

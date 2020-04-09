@@ -22,3 +22,13 @@ app-initial {
     align-items: center;
     justify-content: space-around;
 }
+
+app-information {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-evenly;
+}

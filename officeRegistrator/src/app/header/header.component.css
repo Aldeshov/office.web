@@ -105,40 +105,6 @@ header {
     width: 100%;
 }
 
-.search {
-    background-color: #272729;
-    border: 1px solid #565758;
-    border-radius: 10px;
-    color: white;
-    padding: 5px;
-    padding-left: 10px;
-    transition: 0.3s;
-    user-select: none;
-}
-
-.search:hover {
-    background-color: #3d3d3e;
-    transition: 0.3s;
-}
-
-.search:focus {
-    outline: none;
-}
-
-.search-btn {
-    margin-left: 20px;
-    padding: 2.5px 6.5px 6.5px 6.5px;
-    border: 1px solid #343536;
-    user-select: none;
-    border-radius: 15px;
-}
-
-.search-btn:hover {
-    cursor: pointer;
-    background-color: #565758;
-    color: #1b1c1c;
-}
-
 .menu {
     position: fixed;
     display: flex;
@@ -179,4 +145,10 @@ header {
 .hidden {
     left: -200px;
     transition: 0.3s;
+}
+
+app-search {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
 }

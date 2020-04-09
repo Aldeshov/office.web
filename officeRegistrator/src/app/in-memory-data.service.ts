@@ -17,7 +17,7 @@ export class InMemoryDataService implements InMemoryDbService {
   constructor() { }
 
   createDb() {
-    let Files: CourseFile[] = [
+    let Files: CourseFile[] = [ 
       {id: 'ID000001',name: 'file1.xlsx', path: '/DISA0001', teacher: "IDTEACH001"},
       {id: 'ID000002',name: 'file2.docx', path: '/DISA0001/Files', teacher: "IDTEACH001"},
       {id: 'ID000003',name: 'file3.pptx', path: '/DISA0001/Others', teacher: "IDTEACH001"},
@@ -29,7 +29,7 @@ export class InMemoryDataService implements InMemoryDbService {
       {id: 'ID000009',name: 'file9.md', path: '/DISA0002', teacher: "IDTEACH001"},
       {id: 'ID000010',name: 'f.pdf', path: '/DISA0003/pdf', teacher: "IDTEACH001"},
       {id: 'ID000011',name: 'files.zip', path: '/DISA0003', teacher: "IDTEACH001"},
-      {id: 'ID000001',name: 'filesadsadasdasdads,dbsdjsnsnsnsnssnnasdnjansdjbasdbidbsaid.xlsx', path: '/DISA0001/asdfghfdsfgrhtjdsa/asdfghtfrew/asdgfrthygtfrdeswaq/sdfghnjgtfdeswaqSDFGH/SDFGBNHGFDSWADEFRGH/JGFDSFGHN/GFSDEFGHNGFDSDFGH/FEWDFRGBFDFG/HFD', teacher: "IDTEACH001"}
+      {id: 'ID000001',name: 'filesadsadasdasdadsdbsdjsnsnsnsnssnnasdnjansdjbasdbidbsaid.xlsx', path: '/DISA0001/asdfghfdsfgrhtjdsa/asdfghtfrew/asdgfrthygtfrdeswaq/sdfghnjgtfdeswaqSDFGH/SDFGBNHGFDSWADEFRGH/JGFDSFGHN/GFSDEFGHNGFDSDFGH/FEWDFRGBFDFG/HFD/asd', teacher: "IDTEACH001"}
     ];
 
     let Teachers: Teacher[] = [

@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule }    from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { WelcomeComponent } from './welcome/welcome.component';
@@ -14,6 +15,8 @@ import { HeaderComponent } from './header/header.component';
 import { ScheduleComponent } from './schedule/schedule.component';
 import { NewsComponent } from './news/news.component';
 import { TitleComponent } from './title/title.component';
+import { SearchComponent } from './search/search.component';
+import { InformationComponent } from './information/information.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +28,9 @@ import { TitleComponent } from './title/title.component';
     HeaderComponent,
     ScheduleComponent,
     NewsComponent,
-    TitleComponent
+    TitleComponent,
+    SearchComponent,
+    InformationComponent
   ],
   imports: [
     HttpClientModule,
@@ -33,7 +38,8 @@ import { TitleComponent } from './title/title.component';
     HttpClientInMemoryWebApiModule.forRoot(
       InMemoryDataService, { dataEncapsulation: false }
     ),
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

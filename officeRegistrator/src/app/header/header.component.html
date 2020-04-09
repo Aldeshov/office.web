@@ -16,15 +16,12 @@
             <span>About us</span>
         </div>
 
-        <div class="header-link">
-            <span>Anothers</span>
+        <div class="header-link" (click)="information()">
+            <span> {{ u.name }}</span>
         </div>
     
         <div class="right-menu">
-            <input type="text" class="search" placeholder="Search">
-            <div class="search-btn" (click)="search()">
-                <span>go</span>
-            </div>
+            <app-search></app-search>
         </div>
     </div>
 </header>

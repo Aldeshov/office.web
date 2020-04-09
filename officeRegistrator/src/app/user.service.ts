@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map} from 'rxjs/operators';
 
 import { Observable, of } from 'rxjs';
@@ -19,12 +19,21 @@ export class UserService {
   private coursesUrl = 'api/Courses';
   private filesUrl = 'api/Files';
 
+  httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  };
+
   constructor(private http: HttpClient) { }
 
   getUser(log: string, pass: string): Observable<User> {
     return this.http.get<User[]>(this.usersUrl).pipe(map(users => users.find(s => s.login == log && s.password == pass),catchError(this.handleError<User[]>('usersUrl', []))))
   }
 
+  changeUserPassword(u: User): Observable<any>{
+    return this.http.put(this.usersUrl, u, this.httpOptions).pipe(
+      catchError(this.handleError<any>('updateHero'))
+    );
+  }
   getNews(): Observable<News[]> {
     return this.http.get<News[]>(this.newsUrl).pipe(catchError(this.handleError<News[]>('newsUrl', [])));
   }
@@ -91,5 +100,15 @@ export class UserService {
       return this.getUser(value1,value2);
     }
     return of(null);
+  }
+
+  searchNews(term: string): Observable<News[]> {
+    if (!term.trim()) {
+      // if not search term, return empty hero array.
+      return of([]);
+    }
+    return this.http.get<News[]>(`${this.newsUrl}/?title=${term}`).pipe(
+      catchError(this.handleError<News[]>('search', []))
+    );
   }
 }

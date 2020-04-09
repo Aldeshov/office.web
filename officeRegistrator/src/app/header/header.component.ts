@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router'
+import { Input } from '@angular/core';
 
 @Component({
   selector: 'app-header',
@@ -7,6 +8,7 @@ import { Router } from '@angular/router'
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
+  @Input() u;
 
   constructor(private router: Router) { }
 
@@ -38,21 +40,21 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     document.cookie='userPassword=;expires=Thu; 01 Jan 1970; path=/'; 
-    location.reload()
+    this.router.navigate(['/']);
   }
 
   files() {
     this.router.navigate(['/student-files']);
   }
 
-  search() {
-    alert("This option not finished yet!")
-  }
-
   mainmenu(){
     this.router.navigate(['/welcome']);
   }
 
+  information(){
+    this.router.navigate(['/info']);
+  }
+  
   //Temp
   alert(str){
     alert(str);

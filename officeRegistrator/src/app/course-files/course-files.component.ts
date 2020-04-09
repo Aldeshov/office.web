@@ -32,6 +32,7 @@ export class CourseFilesComponent implements OnInit {
     this.objects = [];
     if(u != null)
     {
+      this.u = u;
       if(u.type == "Student")
       {
         for(let i = 0; i < (<Student> u).courses.length; i++)
@@ -206,12 +207,12 @@ export class CourseFilesComponent implements OnInit {
         if(dirs.find(d => d == temp) == undefined)
         {
           dirs.push(temp);
-          let id = temp;
+          let asd = temp;
           if(temp.length > 15)
           {
             temp = temp.substr(0, 7) + "..." + temp.substr(temp.length - 4, 4);
           }
-          this.objects.push({id: id, name: temp, type: "#/Dir", ico: "../../assets/images/types/folder.ico"});
+          this.objects.push({id: asd, name: temp, type: "#/Dir", ico: "../../assets/images/types/folder.ico"});
         }
       }
     }

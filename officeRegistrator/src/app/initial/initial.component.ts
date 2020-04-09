@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router'
+import { Location } from '@angular/common';
 
 import { UserService } from '../user.service'
 import { User } from '../oop/User';
@@ -11,7 +12,7 @@ import { User } from '../oop/User';
 })
 export class InitialComponent implements OnInit {
 
-  constructor(private userService: UserService, private router: Router) { }
+  constructor(private userService: UserService, private router: Router, private location: Location) { }
 
   ngOnInit(): void {
     this.userService.checkCookie("userName","userPassword").subscribe(u => this.check(u));
@@ -59,5 +60,9 @@ export class InitialComponent implements OnInit {
         (<HTMLInputElement> document.getElementById("inpassword")).value = "";
       }
     }
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 }

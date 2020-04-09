@@ -1,0 +1,63 @@
+<app-header [u]="u"></app-header>
+
+<main>
+    <h2>Information about User</h2>
+    <table>
+        <tr class="row">
+            <td>
+                <label>ID Student</label>
+            </td>
+            <td>
+                <input id="id" class="input" [(ngModel)]="u.id" placeholder="ID" maxlength="64"/>
+            </td>
+        </tr>
+        <tr class="row">
+            <td>
+                <label>Name</label>
+            </td>
+            <td>
+                <input id="name" class="input" type="text" [(ngModel)]="u.name" placeholder="Name" maxlength="64"/>
+            </td>
+        </tr>
+        <tr class="row">
+            <td>
+                <label>Login</label>
+            </td>
+            <td>
+                <input id="login" class="input" type="text" [(ngModel)]="u.login" placeholder="Login" maxlength="64"/>
+            </td>
+        </tr>
+        <tr class="row">
+            <td>
+                <label>Old Password</label>
+            </td>
+            <td>
+                <input id="old" class="input" type="password" maxlength="64"/>
+            </td>
+        </tr>
+        <tr class="row">
+            <td>
+                <label>New Password</label>
+            </td>
+            <td>
+                <input id="new1" class="input" type="password" maxlength="64"/>
+            </td>
+        </tr>
+        <tr class="row">
+            <td>
+                <label>Confirm Password</label>
+            </td>
+            <td>
+                <input id="new2" class="input" type="password" maxlength="64"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+
+            </td>
+            <td>
+                <input id="save" type="button" class="button" (click)="save()" value="Save" />
+            </td>
+        </tr>
+    </table>
+</main>
