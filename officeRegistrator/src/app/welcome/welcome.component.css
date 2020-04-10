@@ -5,3 +5,7 @@ main {
     align-items: center;
     font-family: inherit;
 }
+
+.welcome {
+    background: url("../../assets/images/back.jpg");
+}

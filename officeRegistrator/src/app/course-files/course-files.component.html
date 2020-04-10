@@ -1,19 +1,21 @@
-<app-header [u]="u"></app-header>
-<div [class.hidden]="u" class="content">
-    <header>
-        <div *ngFor="let t of title" (click)="go(t)" class="link">
-            <span class="dir"> {{ t.title }} </span> &gt; &nbsp;
-        </div>
-    </header>
+<div *ngIf="u">
+    <app-header [u]="u"></app-header>
+    <div [class.hidden]="u" class="content">
+        <header>
+            <div *ngFor="let t of title" (click)="go(t)" class="link">
+                <span class="dir"> {{ t.title }} </span> &gt; &nbsp;
+            </div>
+        </header>
 
-    <main>
-        <div *ngFor="let c of objects" class="obj" (click)="getFiles(c)">
-            <div class="obj-type">
-                <img [src]="c.ico" height="64px"/>
+        <main>
+            <div *ngFor="let c of objects" class="obj" (click)="getFiles(c)">
+                <div class="obj-type">
+                    <img [src]="c.ico" height="64px"/>
+                </div>
+                <div class="obj-name">
+                    <span> {{ c.name }} </span>
+                </div>
             </div>
-            <div class="obj-name">
-                <span> {{ c.name }} </span>
-            </div>
-        </div>
-    </main>
+        </main>
+    </div>
 </div>

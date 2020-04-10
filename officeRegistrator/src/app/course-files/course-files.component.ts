@@ -32,7 +32,7 @@ export class CourseFilesComponent implements OnInit {
     this.objects = [];
     if(u != null)
     {
-      this.u = u;
+      this.u = (<Student> u);
       if(u.type == "Student")
       {
         for(let i = 0; i < (<Student> u).courses.length; i++)

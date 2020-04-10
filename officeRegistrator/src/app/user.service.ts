@@ -29,11 +29,14 @@ export class UserService {
     return this.http.get<User[]>(this.usersUrl).pipe(map(users => users.find(s => s.login == log && s.password == pass),catchError(this.handleError<User[]>('usersUrl', []))))
   }
 
-  changeUserPassword(u: User): Observable<any>{
+  updateUser(u: User): Observable<any>{
+    this.setCookie('userName', u.login, 99);
+    this.setCookie('userPassword', u.password, 99);
     return this.http.put(this.usersUrl, u, this.httpOptions).pipe(
-      catchError(this.handleError<any>('updateHero'))
+      catchError(this.handleError<any>('updateUser'))
     );
   }
+
   getNews(): Observable<News[]> {
     return this.http.get<News[]>(this.newsUrl).pipe(catchError(this.handleError<News[]>('newsUrl', [])));
   }

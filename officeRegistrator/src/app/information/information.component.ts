@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from '../oop/User';
 import { UserService } from '../user.service';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-information',
@@ -11,6 +12,7 @@ import { Router } from '@angular/router';
 export class InformationComponent implements OnInit {
 
   u: User = null;
+  private location: Location;
 
   constructor(private userService: UserService, private router: Router) { }
 
@@ -36,7 +38,7 @@ export class InformationComponent implements OnInit {
       {
         let p = (<HTMLInputElement> document.getElementById("new1")).value;
         let old = (<HTMLInputElement> document.getElementById("old")).value;
-        this.userService.checkCookie("userName","userPassword").subscribe(u => this.check(u, p, old));
+        this.check(p, old);
       }
       else
       {
@@ -49,21 +51,17 @@ export class InformationComponent implements OnInit {
     }
   }
 
-  check(u: User, p: string, old: string){
-    if(u != null)
+  check(p: string, old: string){
+    if(this.u.password == old){
+      this.u.password = p;
+      this.userService.updateUser(this.u).subscribe(() => alert("Password changed!"));
+      (<HTMLInputElement> document.getElementById("new1")).value = "";
+      (<HTMLInputElement> document.getElementById("new2")).value = "";
+      (<HTMLInputElement> document.getElementById("old")).value = "";
+    }
+    else
     {
-      if(u.password == old){
-        this.u.password = p;
-        this.userService.changeUserPassword(this.u);
-        alert("Password changed!");
-        (<HTMLInputElement> document.getElementById("new1")).value = "";
-        (<HTMLInputElement> document.getElementById("new2")).value = "";
-        (<HTMLInputElement> document.getElementById("old")).value = "";
-      }
-      else
-      {
-        alert("Incorrect Old Password!");
-      }
+      alert("Incorrect Old Password!");
     }
   }
 }
