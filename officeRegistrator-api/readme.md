@@ -1,5 +1,5 @@
 # Django Project
-**Office of the Registrator**
+***Office of the Registrator***
 
 --- 
 For Windows
