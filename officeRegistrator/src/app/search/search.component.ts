@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { News } from '../oop/News';
+import { News } from '../_models/News';
 import { Observable, Subject } from 'rxjs';
 
 import {
   debounceTime, distinctUntilChanged, switchMap
  } from 'rxjs/operators';
 
-import { UserService } from '../user.service';
+import { UserService } from '../_services';
  
 @Component({
   selector: 'app-search',

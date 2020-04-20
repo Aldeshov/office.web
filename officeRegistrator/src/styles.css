@@ -13,7 +13,6 @@ app-first-page {
     flex-direction: column;
     align-items: center;
     background: url("assets/images/back.jpg");
-
 }
 
 app-initial {
@@ -42,4 +41,19 @@ app-welcome {
     width: 100%;
     height: 100%;
     background: url("assets/images/back.jpg");
+}
+
+app-news {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+app-schedule {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: nowrap;
 }

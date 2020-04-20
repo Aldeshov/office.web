@@ -1,8 +1,12 @@
-<div [class.hidden]="!u" class="welcome">    
-    <app-header [u]="u"></app-header>
+<div *ngIf="!loading" class="welcome">    
+    <app-header [name]="u.first_name"></app-header>
     <main>
-        <app-title [u]="u"></app-title>
+        <app-title [name]="u.first_name"></app-title>
         <app-news></app-news>
         <app-schedule></app-schedule>
     </main>
+</div>
+
+<div *ngIf="loading" class="loading">
+    <img src="../../assets/images/loading.gif" width="100px"/>
 </div>

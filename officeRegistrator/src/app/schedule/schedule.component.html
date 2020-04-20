@@ -1,51 +1,55 @@
-<h4>Schedule</h4>
-<div class="schedule block">
+<h3 *ngIf="sch.length">Schedule</h3>
+<div *ngIf="!loading" class="schedule block">
     <div class="days">
         <div class="x">
-
+            ○
         </div>
-        <div class="day"  [style]="0 == day ? 'background-color: rgb(225,225,225); color: black;' : ''">
+        <div class="day"  [style]="0 == day ? 'background-color: rgb(120,120,120); color: black;' : ''">
             Monday
         </div>
-        <div class="day"  [style]="1 == day ? 'background-color: rgb(225,225,225); color: black;' : ''">
+        <div class="day"  [style]="1 == day ? 'background-color: rgb(120,120,120); color: black;' : ''">
             Tuesday
         </div>
-        <div class="day"  [style]="2 == day ? 'background-color: rgb(225,225,225); color: black;' : ''">
+        <div class="day"  [style]="2 == day ? 'background-color: rgb(120,120,120); color: black;' : ''">
             Wednesday
         </div>
-        <div class="day"  [style]="3 == day ? 'background-color: rgb(225,225,225); color: black;' : ''">
+        <div class="day"  [style]="3 == day ? 'background-color: rgb(120,120,120); color: black;' : ''">
             Thursday
         </div>
-        <div class="day"  [style]="4 == day ? 'background-color: rgb(225,225,225); color: black;' : ''">
+        <div class="day"  [style]="4 == day ? 'background-color: rgb(120,120,120); color: black;' : ''">
             Friday
         </div>
-        <div class="day"  [style]="5 == day ? 'background-color: rgb(225,225,225); color: black;' : ''">
+        <div class="day"  [style]="5 == day ? 'background-color: rgb(120,120,120); color: black;' : ''">
             Saturday
         </div>
-        <div class="day end"  [style]="6 == day ? 'background-color: rgb(225,225,225); color: black;' : ''">
+        <div class="day end"  [style]="6 == day ? 'background-color: rgb(120,120,120); color: black;' : ''">
             Sunday
         </div>
     </div>
     <div class="column">
         <div *ngFor="let y of bnums" class="row">
-            <div class="left" [style]="y + 8 == hour ? 'background-color: rgb(225,225,225); color: black;' : ''">
+            <div class="left" [style]="y + 8 == hour ? 'background-color: rgb(100,100,100); color: black;' : ''">
                 <span>
                     {{y+8}} : 00 
                 </span>
             </div>
 
             <div *ngFor="let x of anums" class="object">
-                <div *ngIf="!sch[y][x]" class="nothing" [style]="x == day && y + 8 == hour ? 'background-color: rgb(225,225,225)' : ''">
+                <div *ngIf="!sch[y][x]" class="nothing" [id]="'n' + y*10 + x" [style]="x == day && y + 8 == hour ? 'background-color: rgb(100,100,100)' : ''">
                     <div *ngIf="x == day && y + 8 ==  hour">
                         <img id="line" src="assets/images/line.png" aria-readonly="true" alt="" [style]="'top: ' + (min / 1.143 - 30) + 'px'"/>
                     </div>
                 </div>
 
-                <div *ngIf="sch[y][x]" class="something" [style]="x == day && y + 8 == hour ? 'background-color: rgb(144,174,210); font-weight: 600' : ''">
-                    <span class="i">{{ sch[y][x].name }}</span>
+                <div *ngIf="sch[y][x]" class="something" [id]="'n'+ y*10 + x" [style]="x == day && y + 8 == hour ? 'background-color: rgb(144,174,210); font-weight: 600' : ''">
+                    <span class="i ia">{{ sch[y][x].name }}</span>
                     <span class="i">{{ sch[y][x].room }}</span>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
+<div *ngIf="loading" class="loading">
+    <img src="../../assets/images/loading.gif" width="50px"/>
 </div>

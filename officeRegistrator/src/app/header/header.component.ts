@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router'
 import { Input } from '@angular/core';
+import { AuthenticationService } from '../_services';
 
 @Component({
   selector: 'app-header',
@@ -8,12 +9,11 @@ import { Input } from '@angular/core';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  @Input() u;
+  @Input() name = "Unknown";
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private authenticate: AuthenticationService) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
   modify(){
     if(document.getElementById('menu').classList.contains('hidden'))
@@ -38,13 +38,13 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  logout() {
-    document.cookie='userPassword=;expires=Thu; 01 Jan 1970; path=/'; 
-    this.router.navigate(['/']);
+  logout(){
+    this.authenticate.logout();
+    this.router.navigate(['']);
   }
 
   files() {
-    this.router.navigate(['/student-files']);
+    this.router.navigate(['/student-files/0/%2F']);
   }
 
   mainmenu(){

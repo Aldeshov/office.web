@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router'
 
-import { UserService } from '../user.service'
-import { User } from '../oop/User';
+import { UserService, AuthenticationService } from '../_services'
+import { User } from '../_models';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-welcome',
@@ -13,9 +14,14 @@ export class WelcomeComponent implements OnInit {
   
   u: User = null;
 
-  constructor(private userService: UserService, private router: Router) { }
+  loading = true;
+
+  constructor(private authenticate: AuthenticationService) { }
   
   ngOnInit(): void {
-    this.userService.checkCookie("userName","userPassword").subscribe(u => {if(u){this.u = u;}else{this.router.navigate(['']);}});
+    this.authenticate.currentUser.pipe(debounceTime(400)).subscribe(u => {
+      this.u = u;
+      this.loading = false;
+    });
   }
 }

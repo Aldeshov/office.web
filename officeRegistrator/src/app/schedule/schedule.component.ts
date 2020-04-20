@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Course } from '../oop/Course';
+import { Course } from '../_models';
 import { range } from 'rxjs';
-import { Student } from '../oop/Student';
-import { Teacher } from '../oop/Teacher';
-import { UserService } from '../user.service';
+import { UserService } from '../_services';
 
 @Component({
   selector: 'app-schedule',
@@ -21,13 +19,14 @@ export class ScheduleComponent implements OnInit {
 
   anums: number[] = [];
   bnums: number[] = [];
+  loading = true;
 
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
     if(this.day == -1)
     {
-      this.day = 6;
+    this.day = 6;
     }
 
     this.sch = this.newArray(7,13);
@@ -35,27 +34,18 @@ export class ScheduleComponent implements OnInit {
     range(0,7).subscribe(x => this.anums[x] = x);
     range(0,13).subscribe(x => this.bnums[x] = x);
 
-    this.userService.checkCookie("userName","userPassword").subscribe(u => this.func(u));
+    this.userService.getCourses().subscribe(c => this.func(c));
   }
 
-  func(u){
-    if(u.type == "Student")
+  func(courses: Course[]){
+    for(let i = 0; i < courses.length; i++)
     {
-      for(let i = 0; i < (<Student> u).courses.length; i++)
+      for(let j = 0; j < courses[i].schedule.length; j++)
       {
-        for(let j = 0; j < (<Student> u).courses[i].schedule.length; j++)
-        {
-          this.sch[(<Student> u).courses[i].schedule[j][0]][(<Student> u).courses[i].schedule[j][1]] = (<Student> u).courses[i];
-        }
+          this.sch[courses[i].schedule[j][0]][courses[i].schedule[j][1]] = courses[i];
       }
     }
-    else 
-    {
-      if(u.type == "Teacher")
-      {
-        this.userService.getTeacherCourses((<Teacher> u).id).subscribe(cs => this.teachersch(cs));
-      }
-    }
+    this.loading = false;
   }
 
   newArray(x,y):Course[][] {
@@ -67,15 +57,5 @@ export class ScheduleComponent implements OnInit {
       }
     }
     return temp;
-  }
-
-  teachersch(courses: Course[]) {
-    for(let i = 0; i < courses.length; i++)
-    {
-      for(let j = 0; j < courses[i].schedule.length; j++)
-      {
-        this.sch[courses[i].schedule[j][0]][courses[i].schedule[j][1]] = courses[i];
-      }
-    }
   }
 }

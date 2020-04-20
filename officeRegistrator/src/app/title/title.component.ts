@@ -7,7 +7,7 @@ import { Input } from '@angular/core';
   styleUrls: ['./title.component.css']
 })
 export class TitleComponent implements OnInit {
-  @Input() u;
+  @Input() name = "Unknown";
 
   title: String = "Welcome";
 

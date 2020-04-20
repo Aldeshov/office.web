@@ -1,14 +1,15 @@
 .block {
     background-color: #1a1a1b;
     border: 1px solid #343536;
-    border-radius: 10px;
+    border-radius: 15px;
     color: rgb(200, 200, 200);
+    box-shadow: 0 0 10px rgba(0,0,0,0.7);
 }
 
 .something {
     transition: 0.3s; 
     color: black;
-    background-color: rgb(245,245,245);
+    background-color: rgb(150,150,150);
 }
 
 .something:hover {
@@ -38,8 +39,8 @@
 
 .nothing, .something {
     border: 1px solid rgb(175, 175, 175);
-    min-width: 150px;
-    min-height: 50px;
+    width: 150px;
+    height: 50px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -75,6 +76,9 @@
 
 .x {
     border-top: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
 }
 
 .time {
@@ -91,4 +95,18 @@
     height: 3px;
     position: relative;
     z-index: 10;
+}
+
+.end {
+    border-right: none;
+    border-top-right-radius: 15px;
+}
+
+#n06, #n106, #n206, #n306, #n406, #n506, #n606, #n706, #n806, #n906, #n1006, #n1106, #n1206 {
+    border-right: none;
+}
+
+.ia {
+    color: rgb(57, 70, 74);
+    text-decoration: underline;
 }

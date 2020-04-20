@@ -4,10 +4,11 @@
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    border: 1.5px solid rgb(220,220,220);
+    border: 1.5px solid rgb(85,85,85);
     border-radius: 15px;
     min-width: 250px;
-    background-color: rgb(245,245,245);
+    color: aliceblue;
+    background-color: #1a1a1b;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
 }
 
@@ -17,12 +18,12 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    border-bottom: 1px solid rgb(220,220,220);
+    border-bottom: 1px solid rgb(100,100,100);
     transition: 0.1s;
 }
 
 .el:hover {
-    background-color: rgb(220,220,220);
+    background-color: rgb(100,100,100);
     transition: 0.15s;
     cursor: pointer;
 }

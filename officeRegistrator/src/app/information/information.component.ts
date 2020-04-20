@@ -1,67 +1,67 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from '../oop/User';
-import { UserService } from '../user.service';
+import { User } from '../_models/User';
+import { UserService, AuthenticationService } from '../_services';
 import { Router } from '@angular/router';
-import { Location } from '@angular/common';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-information',
   templateUrl: './information.component.html',
   styleUrls: ['./information.component.css']
 })
+
 export class InformationComponent implements OnInit {
 
   u: User = null;
-  private location: Location;
 
-  constructor(private userService: UserService, private router: Router) { }
+  loading = true;
+
+  error = "";
+  constructor(private userService: UserService, private router: Router, private authenticate: AuthenticationService) { }
 
   ngOnInit(): void {
-    this.userService.checkCookie("userName","userPassword").subscribe(u => this.func(u));
-  }
-
-  func(u: User) {
-    if(u != null)
+    if(this.authenticate.currentUser)
     {
-      this.u = u;
-    }
-    else
-    {
-      this.router.navigate(['']);
+      this.authenticate.currentUser.subscribe(u => {
+        this.u = u;
+        this.loading = false;
+      });
     }
   }
 
   save() {
-    if((<HTMLInputElement> document.getElementById("new1")).value == (<HTMLInputElement> document.getElementById("new2")).value)
-    {
-      if((<HTMLInputElement> document.getElementById("new1")).value.length >= 8)
+    let old_password = (<HTMLInputElement> document.getElementById("old")).value;
+    let new_password1 = (<HTMLInputElement> document.getElementById("new1")).value;
+    let new_password2 = (<HTMLInputElement> document.getElementById("new2")).value;
+    this.userService.updateUser(this.u, old_password, new_password1, new_password2).pipe(first()).subscribe(msg => {
+      this.error = "";
+      if(msg.ERROR)
       {
-        let p = (<HTMLInputElement> document.getElementById("new1")).value;
-        let old = (<HTMLInputElement> document.getElementById("old")).value;
-        this.check(p, old);
+        if(msg.ERROR.old_password)
+        {
+          this.error += "Password: " + msg.ERROR.old_password
+        }
+        if(msg.ERROR.new_password1)
+        {
+          this.error += "New Password: " + msg.ERROR.new_password1
+        }
+        if(msg.ERROR.new_password2)
+        {
+          this.error += "New Password: " + msg.ERROR.new_password2
+        }
+        if(msg.ERROR.username)
+        {
+          this.error += "login: " + msg.ERROR.new_password2
+        }
+        console.log(JSON.stringify(msg))
       }
       else
       {
-        alert("New Password's length must be greater than 8")
+        alert("Changed! \
+        Page will reload ")
+        this.authenticate.logout()
+        this.router.navigate(['/login']);
       }
-    }
-    else
-    {
-      alert("Passwords don't match")
-    }
-  }
-
-  check(p: string, old: string){
-    if(this.u.password == old){
-      this.u.password = p;
-      this.userService.updateUser(this.u).subscribe(() => alert("Password changed!"));
-      (<HTMLInputElement> document.getElementById("new1")).value = "";
-      (<HTMLInputElement> document.getElementById("new2")).value = "";
-      (<HTMLInputElement> document.getElementById("old")).value = "";
-    }
-    else
-    {
-      alert("Incorrect Old Password!");
-    }
+    });
   }
 }

@@ -1,7 +1,11 @@
-<h4>News</h4>
-<div class="news block">
-    <div class="new" *ngFor="let n of news">
-        <h3> {{ n.title }} </h3>
+<h3>News</h3>
+<div *ngIf="!loading" class="news block">
+    <div class="new" *ngFor="let n of news" id="end">
+        <h3 class="green"> {{ n.title }} </h3>
         <h4> {{ n.body }} </h4>
     </div>
+</div>
+
+<div *ngIf="loading" class="loading">
+    <img src="../../assets/images/loading.gif" width="50px"/>
 </div>

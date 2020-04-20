@@ -6,6 +6,6 @@ export interface Course
 	name: string;
 	credits: number;
 	schedule: number[][];
-	teacher: Teacher;
 	room: string;
+	teacher: Teacher;
 }

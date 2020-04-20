@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router'
-import { Location } from '@angular/common';
+import { Router, ActivatedRoute } from '@angular/router'
 
-import { UserService } from '../user.service'
-import { User } from '../oop/User';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { AuthenticationService, UserService } from '../_services';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-initial',
@@ -12,57 +12,57 @@ import { User } from '../oop/User';
 })
 export class InitialComponent implements OnInit {
 
-  constructor(private userService: UserService, private router: Router, private location: Location) { }
+  loginForm: FormGroup;
+  loading = false;
+  submitted = false;
+  returnUrl: string;
+  error = '';
+  remember = false;
 
-  ngOnInit(): void {
-    this.userService.checkCookie("userName","userPassword").subscribe(u => this.check(u));
-    if(this.userService.getCookie("userName") != "")
-    {
-      (<HTMLInputElement> document.getElementById("inname")).value = this.userService.getCookie("userName");
-    }
-  }
-
-  go() {
-    let userName = (<HTMLInputElement> document.getElementById("inname")).value;
-    let userPassword = (<HTMLInputElement> document.getElementById("inpassword")).value;
-    let c = (<HTMLInputElement> document.getElementById("save")).checked;
-
-    this.userService.getUser(userName, userPassword).subscribe(u => this.check(u, c, true));
-  }
-
-  check(u: User, check = false, d = false): void {
-    if(u != null) {
-      let userName = u.login;
-      let userPassword = u.password;
-
-      if(check)
-      {
-        this.userService.setCookie("userName",userName, 99);
-        this.userService.setCookie("userPassword",userPassword, 99);
-      }
-      else
-      {
-        if(d)
-        {
-          this.userService.setCookie("userName",userName, 0.001);
-          this.userService.setCookie("userPassword",userPassword, 0.001);
-        }
-      }
-      this.router.navigate(['/welcome']);
-    }
-    else
-    {
-      if(d)
-      {
-        (<HTMLInputElement> document.getElementById("inname")).style.borderBottomColor = "red";
-        (<HTMLInputElement> document.getElementById("inpassword")).style.borderBottomColor = "red";
-        (<HTMLInputElement> document.getElementById("inname")).value = "";
-        (<HTMLInputElement> document.getElementById("inpassword")).value = "";
+  constructor(
+    private userService: UserService, 
+    private formBuilder: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
+    private authenticationService: AuthenticationService
+    ) { 
+        // redirect to home if already logged in
+        if (this.authenticationService.currentUserValue) { 
+          this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/welcome';
+          this.router.navigate([this.returnUrl]);
       }
     }
+
+  ngOnInit(){
+    this.loginForm = this.formBuilder.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required]
+    });
+
+    // get return url from route parameters or default to '/welcome'
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/welcome';
   }
 
-  goBack(): void {
-    this.location.back();
+  get f() { return this.loginForm.controls; }
+
+  onSubmit() {
+      this.submitted = true;
+
+      // stop here if form is invalid
+      if (this.loginForm.invalid) {
+          return;
+      }
+
+      this.loading = true;
+      this.authenticationService.login(this.f.username.value, this.f.password.value)
+          .pipe(first())
+          .subscribe(
+              data => {
+                this.router.navigate([this.returnUrl]);
+              },
+              error => {
+                  this.error = error;
+                  this.loading = false;
+              });
   }
 }

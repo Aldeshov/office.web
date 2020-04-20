@@ -1,6 +1,6 @@
-<div *ngIf="u">
-    <app-header [u]="u"></app-header>
-    <div [class.hidden]="u" class="content">
+<app-header [name]="u.first_name"></app-header>
+<div *ngIf="!loading" id="main">
+    <div class="content">
         <header>
             <div *ngFor="let t of title" (click)="go(t)" class="link">
                 <span class="dir"> {{ t.title }} </span> &gt; &nbsp;
@@ -8,14 +8,78 @@
         </header>
 
         <main>
-            <div *ngFor="let c of objects" class="obj" (click)="getFiles(c)">
+            <div *ngFor="let c of objects" (click)="route(c)" class="obj" >
                 <div class="obj-type">
                     <img [src]="c.ico" height="64px"/>
                 </div>
                 <div class="obj-name">
-                    <span> {{ c.name }} </span>
+                    <span class="cn"> {{ c.name }} </span>
                 </div>
+            </div>
+            <div *ngIf="isT" class="obj" (click)="add()">
+                <span class="forP first"></span>
+                <span class="forP second"></span>
             </div>
         </main>
     </div>
+</div>
+
+<div *ngIf="addFile" class="form">
+    <table>
+        <tr class="row">
+            <td>
+                <label>File Name</label>
+            </td>
+            <td>
+                <input class="input" type="text" placeholder="File Name" required [(ngModel)]="fileName"/>
+            </td>
+        </tr>
+        <tr class="row">
+            <td>
+                <label>Directory</label>
+            </td>
+            <td class="flex">
+                <span id="name">Current Folder &gt;</span>
+                <span *ngFor="let d of dirs"> {{ d }}  &gt;</span>
+            </td>
+        </tr>
+        <tr class="row">
+            <td>
+
+            </td>
+            <td>
+                <input id="name" class="input" type="text" placeholder="Folder Name" maxlength="32" required [(ngModel)]="dirName"/>
+            </td>
+        </tr>
+        <tr class="row">
+            <td>
+
+            </td>
+            <td>
+                <input id="adding" type="button" required class="button" (click)="addDir()" value="Add Folder" />
+            </td>
+        </tr>
+        <tr class="row">
+            <td>
+                <label>Access Students</label>
+            </td>
+            <td>
+                <select required multiple id="select">
+                    <option *ngFor="let s of students" [value]="s.user.id"> {{ s.user.first_name }} {{ s.user.last_name }}</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+
+            </td>
+            <td>
+                <input id="save" type="button" required class="button" (click)="save()" value="Save" />
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div *ngIf="loading" class="loading" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: space-around;">
+    <img src="../../assets/images/loading.gif" width="60px"/>
 </div>
