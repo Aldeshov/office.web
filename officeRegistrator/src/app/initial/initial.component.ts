@@ -58,7 +58,9 @@ export class InitialComponent implements OnInit {
           .pipe(first())
           .subscribe(
               data => {
-                this.router.navigate([this.returnUrl]);
+                data.subscribe(user => {
+                  this.router.navigate([this.returnUrl]);
+                })
               },
               error => {
                   this.error = error;

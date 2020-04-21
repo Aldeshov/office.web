@@ -61,8 +61,8 @@ export class UserService {
         return this.http.get<Course[]>(`${this.BASE_URL}/${this.coursesUrl}`).pipe(catchError(this.handleError<Course[]>('coursesUrl', [])));
     }
 
-    getFiles(teacher = 0, path = "%2F"): Observable<CourseFile[]> {
-        return this.http.get<CourseFile[]>(`${this.BASE_URL}/${this.filesUrl}/${teacher}/${path}/`).pipe(catchError(this.handleError<CourseFile[]>('filesUrl', [])));
+    getFiles(teacher = 0, path = "%2F"): Observable<any> {
+        return this.http.get<any>(`${this.BASE_URL}/${this.filesUrl}/${teacher}/${path}/`).pipe(catchError(this.handleError<any>('filesUrl', [])));
     }
 
     addFile(id, path = "%2F", name = "", students =[]): Observable<any> {

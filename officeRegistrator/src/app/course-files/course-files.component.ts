@@ -64,7 +64,16 @@ export class CourseFilesComponent implements OnInit, OnDestroy {
   fetchData(){
     this.loading = true;
     // Getting Current path then Objects: from current url path
-    this.path = decodeURIComponent(this.r.snapshot.paramMap.get('path'));
+    try
+    {
+      this.path = decodeURIComponent(this.r.snapshot.paramMap.get('path'));
+    }
+    catch(error)
+    {
+      console.error(error)
+      this.router.navigate(['/student-files/0/%2F']);        
+    }
+
     if(this.auth.currentUser)
     {
       this.auth.currentUser.subscribe(u => {
@@ -79,8 +88,16 @@ export class CourseFilesComponent implements OnInit, OnDestroy {
         }
       })
       this.userService.getFiles(+this.r.snapshot.paramMap.get('teacher'),this.r.snapshot.paramMap.get('path')).subscribe(f => {
-        this.func(f);
-        this.loading = false;
+        if(f.NULL)
+        {
+          console.error(f.NULL)
+          this.router.navigate(['/student-files/0/%2F']);        
+        }
+        else
+        {
+          this.func(f);
+          this.loading = false;
+        }
       })
     }
   }
@@ -377,6 +394,11 @@ export class CourseFilesComponent implements OnInit, OnDestroy {
         }
       }
     }
+  }
+  // Exit from file adding
+  cancel(){
+    this.addFile = false;
+    document.getElementById('main').classList.remove('disable');
   }
 }
 

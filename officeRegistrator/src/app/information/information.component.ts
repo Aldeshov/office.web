@@ -17,16 +17,14 @@ export class InformationComponent implements OnInit {
   loading = true;
 
   error = "";
+  
   constructor(private userService: UserService, private router: Router, private authenticate: AuthenticationService) { }
 
   ngOnInit(): void {
-    if(this.authenticate.currentUser)
-    {
-      this.authenticate.currentUser.subscribe(u => {
-        this.u = u;
-        this.loading = false;
-      });
-    }
+    this.authenticate.currentUser.subscribe(u => {
+      this.u = u;
+      this.loading = false;
+    });
   }
 
   save() {

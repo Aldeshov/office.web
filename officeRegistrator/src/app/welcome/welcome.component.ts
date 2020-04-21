@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router'
 
 import { UserService, AuthenticationService } from '../_services'
 import { User } from '../_models';
@@ -19,7 +18,7 @@ export class WelcomeComponent implements OnInit {
   constructor(private authenticate: AuthenticationService) { }
   
   ngOnInit(): void {
-    this.authenticate.currentUser.pipe(debounceTime(400)).subscribe(u => {
+    this.authenticate.currentUser.pipe(debounceTime(300)).subscribe(u => {
       this.u = u;
       this.loading = false;
     });

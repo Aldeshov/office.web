@@ -24,24 +24,28 @@ export class AuthenticationService {
     }
 
     login(username: string, password: string) {
-        return this.http.post<LoginResponse>(`${this.BASE_URL}/api/login/`, { username, password })
+        return this.http.post<any>(`${this.BASE_URL}/api/login/`, { username, password })
             .pipe(map(token => {
+                
                 let key = "JWT " + token.token;
                 const headerDict = {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                     'Access-Control-Allow-Headers': 'Content-Type',
-                    'Authorization': key
+                    'Authorization': key,
+                    'token': token.token
                 }
+
                 const requestOptions = {                                                                                                                                                                                 
                     headers: new HttpHeaders(headerDict), 
                 };
-                this.http.get<User>(`${this.BASE_URL}/api/user/`, requestOptions).subscribe(user => {
-                    user.token = token.token;
+
+                return this.http.get<User>(`${this.BASE_URL}/api/user/`, requestOptions).pipe(map(user => {
+                    user.token = requestOptions.headers.get("token");
                     localStorage.setItem('currentUser', JSON.stringify(user));
                     this.currentUserSubject.next(user);
                     return user;
-                })
+                }))
             }));
     }
 

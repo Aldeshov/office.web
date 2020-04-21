@@ -1,11 +1,5 @@
-import collections
-import json
-
-import jwt
-from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.models import User
-from django.shortcuts import render
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -13,7 +7,6 @@ from rest_framework.views import APIView
 from app.serializers import CourseSerializer, StudentSerializer, TeacherSerializer, UserSerializer, NewsSerializer, \
     FileSerializer
 from .models import Course, Student, Teacher, News, File
-from django.contrib.auth.hashers import check_password
 from django.contrib.auth.forms import PasswordChangeForm
 
 
@@ -205,6 +198,8 @@ def files_view(request, path, teacher):
                         files.append(f)
                     elif teacher == 0:
                         files.append(f)
+            if len(files) == 0:
+                return Response({"NULL": "WRONG PATH"})
             serializer = FileSerializer(files, many=True)
             data = serializer.data
             for el in data:
@@ -215,6 +210,8 @@ def files_view(request, path, teacher):
             for f in File.objects.all():
                 if f.owner == request.user and f.path.startswith(path):
                     files.append(f)
+            if len(files) == 0:
+                return Response({"NULL": "WRONG PATH"})
             serializer = FileSerializer(files, many=True)
             data = serializer.data
             for el in data:
