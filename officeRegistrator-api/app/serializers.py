@@ -42,7 +42,11 @@ class FileSerializer(serializers.Serializer):
     owner_id = serializers.IntegerField(write_only=True)
 
     def update(self, instance, validated_data):
-        pass
+        instance.name = validated_data.get('name')
+        instance.path = validated_data.get('path')
+        instance.owner = User.objects.get(id=validated_data.get("owner_id"))
+        instance.save()
+        return instance
 
     def create(self, validated_data):
         return File.objects.create(**validated_data)

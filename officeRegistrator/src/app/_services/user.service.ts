@@ -1,3 +1,5 @@
+//CopyRight Azat - unknown
+
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError} from 'rxjs/operators';
@@ -30,7 +32,8 @@ export class UserService {
     }
 
     updateUser(updated: User, old_password: string, new_password1: string, new_password2: string): Observable<any>{
-        let new_data = {
+        let new_data = 
+        {
             id: updated.id,
             username: updated.username,
             first_name: updated.first_name,
@@ -65,14 +68,40 @@ export class UserService {
         return this.http.get<any>(`${this.BASE_URL}/${this.filesUrl}/${teacher}/${path}/`).pipe(catchError(this.handleError<any>('filesUrl', [])));
     }
 
-    addFile(id, path = "%2F", name = "", students =[]): Observable<any> {
-        let body = {
-        name: name,
-        path: path,
-        students: students,
-        owner_id: id
+    getFile(teacher = 0, path = "%2F", name = ""): Observable<any> {
+        return this.http.get<any>(`${this.BASE_URL}/${this.filesUrl}/${teacher}/${path}/${name}/`).pipe(catchError(this.handleError<any>('filesUrl')));
+    }
+
+    updateFile(teacher = 0, path = "%2F", name = "", students = [], new_name, new_path): Observable<any> {
+        let s = [];
+        for(let i = 0; i < students.length; i++){
+            s.push(students[i].id)
         }
-        console.log(body)
+        let body = 
+        {
+            name: new_name,
+            path: new_path,
+            students: s,
+        }
+        return this.http.put<any>(`${this.BASE_URL}/${this.filesUrl}/${name}/${teacher}/${path}/`,body, this.httpOptions).pipe(catchError(this.handleError<any>('filesUrl')));
+    }
+
+    deleteFile(teacher = 0, path = "%2F", name = ""): Observable<any> {
+        return this.http.delete<any>(`${this.BASE_URL}/${this.filesUrl}/${name}/${teacher}/${path}/`).pipe(catchError(this.handleError<any>('filesUrl')));
+    }
+
+    addFile(id, path = "%2F", name = "", students =[]): Observable<any> {
+        let s = [];
+        for(let i = 0; i < students.length; i++){
+            s.push(students[i].id)
+        }
+        let body = 
+        {
+            name: name,
+            path: path,
+            students: s,
+            owner_id: id
+        }
         path = encodeURIComponent(path)
         return this.http.post<any>(`${this.BASE_URL}/${this.filesUrl}/${id}/${path}/`,body, this.httpOptions).pipe(catchError(this.handleError<any>('filesUrl')));
     }

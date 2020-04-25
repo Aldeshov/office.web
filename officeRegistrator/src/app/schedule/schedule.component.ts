@@ -1,3 +1,5 @@
+//CopyRight Azat - unknown
+
 import { Component, OnInit } from '@angular/core';
 import { Course } from '../_models';
 import { range } from 'rxjs';

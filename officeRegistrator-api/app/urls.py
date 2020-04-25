@@ -1,7 +1,7 @@
 from django.urls import path
 
 from app.views import CourseListAPIView, CurrentUser, NewsListAPIView, files_view, CourseDetailAPIView, \
-    StudentListAPIView, UserAPIView
+    StudentListAPIView, UserAPIView, CourseFile
 from rest_framework_jwt.views import obtain_jwt_token
 
 urlpatterns = [
@@ -13,4 +13,5 @@ urlpatterns = [
     path('user/students', StudentListAPIView.as_view()),
     path('news/', NewsListAPIView.as_view()),
     path('files/<int:teacher>/<path:path>/', files_view),
+    path('files/<str:name>/<int:teacher>/<path:path>/', CourseFile.as_view()),
 ]

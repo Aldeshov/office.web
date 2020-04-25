@@ -30,8 +30,12 @@ export class CourseFilesComponent implements OnInit, OnDestroy {
   //is Teacher
   isT = false;
 
+  forf = "";
+
   //For Form adding file
   addFile = false;
+
+  editFile = false;
 
   // Titles to Navigate 
   title: Title[] = [];
@@ -87,17 +91,20 @@ export class CourseFilesComponent implements OnInit, OnDestroy {
           }
         }
       })
-      this.userService.getFiles(+this.r.snapshot.paramMap.get('teacher'),this.r.snapshot.paramMap.get('path')).subscribe(f => {
-        if(f.NULL)
+      this.userService.getFiles(+this.r.snapshot.paramMap.get('teacher'),this.r.snapshot.paramMap.get('path')).subscribe(data => {
+        if(data.NULL)
         {
-          console.error(f.NULL)
+          console.error(data.NULL)
           this.router.navigate(['/student-files/0/%2F']);        
         }
         else
         {
-          this.func(f);
+          this.func(data);
           this.loading = false;
         }
+      },
+      error => {
+        this.router.navigate(['/student-files/0/%2F']);  
       })
     }
   }
@@ -150,7 +157,15 @@ export class CourseFilesComponent implements OnInit, OnDestroy {
   add(){
     this.addFile = true;
     document.getElementById('main').classList.add('disable');
-    this.userService.getStudents().subscribe(s => this.students = s)
+    this.userService.getStudents().subscribe(s => this.students = s);
+  }
+
+  edit(name){
+    this.editFile = true;
+    document.getElementById('main').classList.add('disable');
+    this.userService.getStudents().subscribe(s => this.students = s);
+    this.fileName = name;
+    this.forf = name;
   }
 
   addDir(){
@@ -199,15 +214,35 @@ export class CourseFilesComponent implements OnInit, OnDestroy {
         }
         path += this.dirs[i];
       }
-      this.userService.addFile(this.u.id, path, this.fileName, students).subscribe(body => {
-        console.log(body);
-        this.addFile = false;
-        document.getElementById('main').classList.remove('disable');
-        location.reload();
-      })
+      if(this.addFile)
+      {
+        this.userService.addFile(this.u.id, path, this.fileName, students).subscribe(body => {
+          console.log(body);
+          this.addFile = false;
+          document.getElementById('main').classList.remove('disable');
+          location.reload();
+        })
+      }
+      if(this.editFile)
+      {
+        this.userService.updateFile(this.u.id, encodeURIComponent(this.path), this.forf, students, this.fileName, path).subscribe(body => {
+          console.log(body);
+          this.editFile = false;
+          document.getElementById('main').classList.remove('disable');
+          location.reload();
+        })
+      }
     }
   }
 
+  delete(){
+    this.userService.deleteFile(this.u.id, encodeURIComponent(this.path), this.forf).subscribe(res => {
+      console.log(res);
+      this.editFile = false;
+      document.getElementById('main').classList.remove('disable');
+      location.reload(true);
+    })
+  }
   // Titles
   // Adding until end of directory
   titles(){
@@ -256,7 +291,7 @@ export class CourseFilesComponent implements OnInit, OnDestroy {
         }
         else
         {
-          this.path = this.path + '/' + obj.id
+          this.path = this.path + '/' + obj.id          
           this.userService.getFiles(+this.r.snapshot.paramMap.get('teacher'), this.r.snapshot.paramMap.get('path') + "%2F" + obj.id).subscribe(files => this.get(files));
         }
       }
@@ -264,9 +299,16 @@ export class CourseFilesComponent implements OnInit, OnDestroy {
     // If this is a File
     else
     {
+      if(this.isT)
+      {
+        this.edit(obj.name);
+      }
       // Thats just sample. 
       // Here we can get file from server
-      alert("This is a File");
+      else
+      {
+        alert("This is a File");
+      }
     }
   }
 
@@ -398,6 +440,9 @@ export class CourseFilesComponent implements OnInit, OnDestroy {
   // Exit from file adding
   cancel(){
     this.addFile = false;
+    this.editFile = false;
+    this.fileName = "";
+    this.forf = "";
     document.getElementById('main').classList.remove('disable');
   }
 }

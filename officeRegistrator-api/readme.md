@@ -9,5 +9,7 @@ For Windows
 * You need to install `postgresql`
 * Create new database `office`, changing `DATABASES` in `settings.py` by using your data
 
- You can use `db.json` file to restore sample **DB** \
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`manage.py loaddata db.json`
+
+ You can use `dump.sql` file to restore sample **DB** \
+`https://o7planning.org/ru/11913/backup-and-restore-postgres-database-with-pgadmin#a33893371` \
+ Or you must delete `migration` files to create new DataBase

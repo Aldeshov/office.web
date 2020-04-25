@@ -1,3 +1,5 @@
+//CopyRight Azat - unknown
+
 import { Component, OnInit } from '@angular/core';
 
 import { UserService, AuthenticationService } from '../_services'

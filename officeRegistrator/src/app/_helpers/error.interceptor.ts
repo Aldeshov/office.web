@@ -21,6 +21,11 @@ export class ErrorInterceptor implements HttpInterceptor {
             if (err.status === 400) {
                 return throwError("Username or Password Incorrect");
             }
+
+            if (err.status === 404) {
+                return throwError("Not Found");
+            }
+
             const error = err.error.message || err.statusText;
             return throwError(error);
         }))

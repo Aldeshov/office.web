@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.models import User
 from rest_framework import status
@@ -10,21 +12,23 @@ from .models import Course, Student, Teacher, News, File
 from django.contrib.auth.forms import PasswordChangeForm
 
 
-class CourseListAPIView(APIView):
-    def this_user(self, request):
-        get = request.user
+def this_user(request):
+    if request.user.is_anonymous:
+        return None
+    try:
+        student = Student.objects.get(user=request.user)
+    except Student.DoesNotExist as next_s:
         try:
-            user = Student.objects.get(user=get)
-        except Student.DoesNotExist as next_s:
-            try:
-                user = Teacher.objects.get(user=get)
-            except Teacher.DoesNotExist as next_t:
-                return None
-            return user
-        return user
+            teacher = Teacher.objects.get(user=request.user)
+        except Teacher.DoesNotExist as next_t:
+            return None
+        return teacher
+    return student
 
+
+class CourseListAPIView(APIView):
     def get(self, request):
-        user = self.this_user(request)
+        user = this_user(request)
         if user.__class__.__name__ == Student.__name__:
             courses = [c for c in Course.objects.all() if c in user.courses.all()]
             serializer = CourseSerializer(courses, many=True)
@@ -35,7 +39,7 @@ class CourseListAPIView(APIView):
             return Response(serializer.data)
 
     def post(self, request):
-        user = self.this_user(request)
+        user = this_user(request)
         if user.__class__.__name__ == Teacher.__name__:
             serializer = CourseSerializer(data=request.data)
             if serializer.is_valid():
@@ -47,20 +51,8 @@ class CourseListAPIView(APIView):
 
 
 class StudentListAPIView(APIView):
-    def this_user(self, request):
-        get = request.user
-        try:
-            user = Student.objects.get(user=get)
-        except Student.DoesNotExist as next_s:
-            try:
-                user = Teacher.objects.get(user=get)
-            except Teacher.DoesNotExist as next_t:
-                return None
-            return user
-        return user
-
     def get(self, request):
-        user = self.this_user(request)
+        user = this_user(request)
         if user.__class__.__name__ == Teacher.__name__:
             students = Student.objects.all()
             serializer = StudentSerializer(students, many=True)
@@ -80,27 +72,15 @@ class NewsListAPIView(APIView):
 
 
 class CurrentUser(APIView):
-    def this_user(self, request):
-        get = request.user
-        try:
-            user = Student.objects.get(user=get)
-        except Student.DoesNotExist as next_s:
-            try:
-                user = Teacher.objects.get(user=get)
-            except Teacher.DoesNotExist as next_t:
-                return None
-            return user
-        return user
-
     def get(self, request):
         if request.user.is_anonymous:
             return Response({'error': "Not Access"}, status=status.HTTP_401_UNAUTHORIZED)
         else:
             serializer = UserSerializer(request.user, many=False)
             data = serializer.data
-            if self.this_user(request).__class__.__name__ == Teacher.__name__:
+            if this_user(request).__class__.__name__ == Teacher.__name__:
                 data.update({"type": "Teacher"})
-            elif self.this_user(request).__class__.__name__ == Student.__name__:
+            elif this_user(request).__class__.__name__ == Student.__name__:
                 data.update({"type": "Student"})
             return Response(data)
 
@@ -137,20 +117,8 @@ class CurrentUser(APIView):
 
 
 class CourseDetailAPIView(APIView):
-    def this_user(self, request):
-        get = request.user
-        try:
-            user = Student.objects.get(user=get)
-        except Student.DoesNotExist as next_s:
-            try:
-                user = Teacher.objects.get(user=get)
-            except Teacher.DoesNotExist as next_t:
-                return None
-            return user
-        return user
-
     def get(self, request, course_id):
-        user = self.this_user(request)
+        user = this_user(request)
         if user:
             try:
                 course = Course.objects.get(id=course_id)
@@ -177,19 +145,8 @@ class UserAPIView(APIView):
 
 @api_view(['GET', 'POST'])
 def files_view(request, path, teacher):
-    def this_user(get):
-        try:
-            to = Student.objects.get(user=get)
-        except Student.DoesNotExist as next_s:
-            try:
-                to = Teacher.objects.get(user=get)
-            except Teacher.DoesNotExist as next_t:
-                return None
-            return to
-        return to
-
     if request.method == 'GET':
-        user = this_user(request.user)
+        user = this_user(request)
         if user.__class__.__name__ == Student.__name__:
             files = []
             for f in File.objects.all():
@@ -207,8 +164,8 @@ def files_view(request, path, teacher):
             return Response(data)
         elif user.__class__.__name__ == Teacher.__name__:
             files = []
-            for f in File.objects.all():
-                if f.owner == request.user and f.path.startswith(path):
+            for f in Teacher.files.for_user(request):
+                if f.path.startswith(path):
                     files.append(f)
             if len(files) == 0:
                 return Response({"NULL": "WRONG PATH"})
@@ -219,7 +176,7 @@ def files_view(request, path, teacher):
             return Response(data)
 
     elif request.method == 'POST':
-        user = this_user(request.user)
+        user = this_user(request)
         if user.__class__.__name__ == Teacher.__name__:
             students = request.data.get('students')
             new_file = {
@@ -231,10 +188,81 @@ def files_view(request, path, teacher):
             if serializer.is_valid():
                 serializer.save()
                 for s in students:
-                    s = Student.objects.get(id=s.get('id'))
+                    s = Student.objects.get(id=s)
                     s.files.add(File.objects.get(name=request.data.get('name'), path=request.data.get('path')))
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             print(serializer.errors)
             return Response({'error': serializer.errors},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response({'error': "Not Access"}, status=status.HTTP_406_NOT_ACCEPTABLE)
+
+
+class CourseFile(APIView):
+    def get_file(self, request, teacher, path, name):
+        try:
+            if request.method == "PUT" or request.method == "DELETE":
+                if this_user(request).__class__.__name__ == Teacher.__name__ :
+                    return Teacher.files.for_user(request).get(owner=User.objects.get(id=teacher), name=name, path=path)
+                else:
+                    return None
+            if this_user(request).__class__.__name__ == Student.__name__ :
+                return this_user(request).files.all().get(owner_id=teacher, name=str(name), path=str(path))
+            else:
+                return File.objects.get(owner=User.objects.get(id=teacher), name=name, path=path)
+        except Exception as error:
+            print(error)
+            return None
+
+    def get(self, request, teacher, path, name):
+        if not this_user(request):
+            return Response({'error': "Not Access"}, status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            if self.get_file(request, teacher, path, name):
+                file = self.get_file(request, teacher, path, name)
+            else:
+                return Response({"error": "Not Found"})
+            serializer = FileSerializer(file, many=False)
+            data = serializer.data
+            if this_user(request).__class__.__name__ == Teacher.__name__:
+                data.update({"access": "Teacher"})
+            elif this_user(request).__class__.__name__ == Student.__name__:
+                data.update({"access": "Student"})
+            return Response(data)
+
+    def put(self, request, teacher, path, name):
+        if request.user.is_anonymous:
+            return Response({'error': "Not Access"}, status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            if self.get_file(request, teacher, path, name):
+                file = self.get_file(request, teacher, path, name)
+            else:
+                return Response({"error": "Not Found"})
+            data = request.data
+            data["owner_id"] = file.owner.id
+            if not data.get("name"):
+                data["name"] = file.name
+            if not data.get("path"):
+                data["path"] = file.path
+
+            serializer = FileSerializer(instance=file, data=data)
+            if serializer.is_valid():
+                serializer.save()
+                students = request.data.get('students')
+                for s in students:
+                    s = Student.objects.get(id=s)
+                    if not s.files.check(name=request.data.get('name'), path=request.data.get('path')):
+                        s.files.add(File.objects.get(name=request.data.get('name'), path=request.data.get('path')))
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            print(serializer.errors)
+            return Response({'error': serializer.errors}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def delete(self, request, teacher, path, name):
+        if request.user.is_anonymous:
+            return Response({'error': "Not Access"}, status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            if self.get_file(request, teacher, path, name):
+                file = self.get_file(request, teacher, path, name)
+            else:
+                return Response({"error": "Not Found"})
+            file.delete()
+            return Response({"deleted": True}, status=status.HTTP_200_OK)
