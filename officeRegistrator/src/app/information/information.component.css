@@ -15,11 +15,11 @@ main {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    max-width: 300px;
+    width: 200px;
     font-size: 14px;
     justify-content: space-around;
     align-items: center;
-    padding: 15px;
+    padding: 5px;
     color: black;
     margin-top: 10px;
     margin-bottom: 5px;
@@ -77,4 +77,25 @@ table {
     display: flex;
     align-items: center;
     justify-content: space-around;
+}
+
+.changed {
+    position: absolute;
+    top: 40%;
+    left: 39.5%;
+    font-size: 16px;
+    font-weight: 700;
+    z-index: 100;
+    padding: 25px;
+    border-radius: 20px;
+    border: 1px solid rgb(52, 110, 52);
+    background-color: rgb(55, 161, 55);
+    transition: 0.3s;
+    user-select: none;
+}
+
+.disable {
+    opacity: 0.5;
+    pointer-events: none;
+    transition: 0.2s;
 }

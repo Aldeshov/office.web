@@ -1,6 +1,6 @@
 <app-header [name]="u.first_name"></app-header>
 
-<main *ngIf="!loading">
+<main *ngIf="!loading" id="main">
     <h2>Information about User</h2>
     <table>
         <tr class="row">
@@ -76,9 +76,16 @@
             </td>
         </tr>
     </table>
-    <div *ngIf="error" class="alert">{{error}}</div>
+    <div *ngFor="let e of error" class="alert">
+        <span style="font-weight: 800;"> {{ e.head }}</span>
+        <span> {{ e.body }}</span>
+    </div>
 </main>
 
 <div *ngIf="loading" class="loading">
     <img src="../../assets/images/loading.gif" width="100px"/>
+</div>
+
+<div [hidden]="true" id="ok" class="changed">
+    <span>Information Saved! Please reload the page</span>
 </div>

@@ -2,14 +2,16 @@ import json
 
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.models import User
-from rest_framework import status
+from rest_framework import status, generics
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from app.serializers import CourseSerializer, StudentSerializer, TeacherSerializer, UserSerializer, NewsSerializer, \
-    FileSerializer
+from app.serializers import CourseSerializer, StudentSerializer, TeacherSerializer, \
+    UserSerializer, NewsSerializer, FileSerializer
 from .models import Course, Student, Teacher, News, File
 from django.contrib.auth.forms import PasswordChangeForm
+from django_filters.rest_framework import DjangoFilterBackend
+from app.filters import NewsFilter
 
 
 def this_user(request):
@@ -62,13 +64,11 @@ class StudentListAPIView(APIView):
         pass
 
 
-class NewsListAPIView(APIView):
-    def get(self, request):
-        if request.user.is_anonymous:
-            return Response({'error': "Not Access"}, status=status.HTTP_406_NOT_ACCEPTABLE)
-        news = News.objects.all()
-        serializer = NewsSerializer(news, many=True)
-        return Response(serializer.data)
+class NewsListAPIView(generics.ListCreateAPIView):
+    queryset = News.objects.all()
+    serializer_class = NewsSerializer
+    filter_backends = (DjangoFilterBackend,)
+    filter_class = NewsFilter
 
 
 class CurrentUser(APIView):

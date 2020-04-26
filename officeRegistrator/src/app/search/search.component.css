@@ -29,6 +29,7 @@
 .search-btn:hover {
     cursor: pointer;
     background-color: #565758;
+    font-weight: 800;
     color: #1b1c1c;
 }
 

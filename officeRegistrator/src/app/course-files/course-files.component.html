@@ -56,7 +56,7 @@
 
             </td>
             <td>
-                <input id="adding" type="button" required class="button" (click)="addDir()" value="Add Folder" />
+                <input id="adding" type="button" class="button" (click)="addDir()" value="Add Folder" />
             </td>
         </tr>
         <tr class="row">
@@ -73,9 +73,9 @@
             <td>
             </td>
             <td class="buttons">
-                <input id="save" type="button" required class="button" (click)="save()" value="Save" />
+                <input id="save" type="button" class="button" (click)="save()" value="Save" />
                 <input *ngIf="editFile" class="button" type="button" (click)="delete()" value="Delete" />
-                <input class="cancel button" type="button" (click)="cancel()" value="Cancel" />
+                <input class="button" type="button" (click)="cancel()" value="Cancel" />
             </td>
         </tr>
     </table>
