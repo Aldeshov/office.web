@@ -1,13 +1,10 @@
-import json
-
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.models import User
 from rest_framework import status, generics
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from app.serializers import CourseSerializer, StudentSerializer, TeacherSerializer, \
-    UserSerializer, NewsSerializer, FileSerializer
+from app.serializers import CourseSerializer, StudentSerializer,  UserSerializer, NewsSerializer, FileSerializer
 from .models import Course, Student, Teacher, News, File
 from django.contrib.auth.forms import PasswordChangeForm
 from django_filters.rest_framework import DjangoFilterBackend
@@ -15,17 +12,18 @@ from app.filters import NewsFilter
 
 
 def this_user(request):
-    if request.user.is_anonymous:
-        return None
-    try:
-        student = Student.objects.get(user=request.user)
-    except Student.DoesNotExist as next_s:
+    if request.user.is_authenticated:
         try:
-            teacher = Teacher.objects.get(user=request.user)
-        except Teacher.DoesNotExist as next_t:
-            return None
-        return teacher
-    return student
+            return Student.objects.get(user=request.user)
+        except Student.DoesNotExist as next_s:
+            try:
+                return Teacher.objects.get(user=request.user)
+            except Teacher.DoesNotExist as next_t:
+                print("-  " + str(next_s))
+                print("-  " + str(next_t))
+                return None
+    else:
+        return None
 
 
 class CourseListAPIView(APIView):
@@ -59,9 +57,6 @@ class StudentListAPIView(APIView):
             students = Student.objects.all()
             serializer = StudentSerializer(students, many=True)
             return Response(serializer.data)
-
-    def post(self, request):
-        pass
 
 
 class NewsListAPIView(generics.ListCreateAPIView):
@@ -201,7 +196,7 @@ class CourseFile(APIView):
     def get_file(self, request, teacher, path, name):
         try:
             if request.method == "PUT" or request.method == "DELETE":
-                if this_user(request).__class__.__name__ == Teacher.__name__ :
+                if this_user(request).__class__.__name__ == Teacher.__name__:
                     return Teacher.files.for_user(request).get(owner=User.objects.get(id=teacher), name=name, path=path)
                 else:
                     return None
