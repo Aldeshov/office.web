@@ -3,7 +3,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Course } from '../_models';
 import { range } from 'rxjs';
-import { UserService } from '../_services';
+import { CourseService } from '../_services';
 
 @Component({
   selector: 'app-schedule',
@@ -23,7 +23,7 @@ export class ScheduleComponent implements OnInit {
   bnums: number[] = [];
   loading = true;
 
-  constructor(private userService: UserService) { }
+  constructor(private courseService: CourseService) { }
 
   ngOnInit(): void {
     if(this.day == -1)
@@ -36,7 +36,7 @@ export class ScheduleComponent implements OnInit {
     range(0,7).subscribe(x => this.anums[x] = x);
     range(0,13).subscribe(x => this.bnums[x] = x);
 
-    this.userService.getCourses().subscribe(c => this.func(c));
+    this.courseService.getCourses().subscribe(c => this.func(c));
   }
 
   func(courses: Course[]){

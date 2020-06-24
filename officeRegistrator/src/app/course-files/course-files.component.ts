@@ -3,7 +3,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { User } from '../_models/User';
-import { UserService, AuthenticationService } from '../_services'
+import { UserService, AuthenticationService, FileService } from '../_services'
 import { Router, ActivatedRoute, RouterEvent, NavigationEnd } from '@angular/router';
 import { CourseFile } from '../_models/CourseFile';
 import { Subject } from 'rxjs';
@@ -51,7 +51,7 @@ export class CourseFilesComponent implements OnInit, OnDestroy {
   // Current Path
   path: string = "";
 
-  constructor(private userService: UserService, private router: Router, private r: ActivatedRoute, private auth: AuthenticationService) { }
+  constructor(private userService: UserService, private router: Router, private r: ActivatedRoute, private auth: AuthenticationService, private fileService: FileService) { }
 
   ngOnInit(): void {
     // https://medium.com/angular-in-depth/refresh-current-route-in-angular-512a19d58f6e
@@ -91,7 +91,7 @@ export class CourseFilesComponent implements OnInit, OnDestroy {
           }
         }
       })
-      this.userService.getFiles(+this.r.snapshot.paramMap.get('teacher'),this.r.snapshot.paramMap.get('path')).subscribe(data => {
+      this.fileService.getFiles(+this.r.snapshot.paramMap.get('teacher'),this.r.snapshot.paramMap.get('path')).subscribe(data => {
         if(data.NULL)
         {
           console.error(data.NULL)
@@ -216,7 +216,7 @@ export class CourseFilesComponent implements OnInit, OnDestroy {
       }
       if(this.addFile)
       {
-        this.userService.addFile(this.u.id, path, this.fileName, students).subscribe(body => {
+        this.fileService.addFile(this.u.id, path, this.fileName, students).subscribe(body => {
           console.log(body);
           this.addFile = false;
           document.getElementById('main').classList.remove('disable');
@@ -225,7 +225,7 @@ export class CourseFilesComponent implements OnInit, OnDestroy {
       }
       if(this.editFile)
       {
-        this.userService.updateFile(this.u.id, encodeURIComponent(this.path), this.forf, students, this.fileName, path).subscribe(body => {
+        this.fileService.updateFile(this.u.id, encodeURIComponent(this.path), this.forf, students, this.fileName, path).subscribe(body => {
           console.log(body);
           this.editFile = false;
           document.getElementById('main').classList.remove('disable');
@@ -236,7 +236,7 @@ export class CourseFilesComponent implements OnInit, OnDestroy {
   }
 
   delete(){
-    this.userService.deleteFile(this.u.id, encodeURIComponent(this.path), this.forf).subscribe(res => {
+    this.fileService.deleteFile(this.u.id, encodeURIComponent(this.path), this.forf).subscribe(res => {
       console.log(res);
       this.editFile = false;
       document.getElementById('main').classList.remove('disable');
@@ -279,7 +279,7 @@ export class CourseFilesComponent implements OnInit, OnDestroy {
       // If we are in Teachers path(For Student)
       if(obj.id == obj.teacher)
       {
-        this.userService.getFiles(+obj.id, this.r.snapshot.paramMap.get('path')).subscribe(files => this.get(files));
+        this.fileService.getFiles(+obj.id, this.r.snapshot.paramMap.get('path')).subscribe(files => this.get(files));
       }
       else
       {
@@ -287,12 +287,12 @@ export class CourseFilesComponent implements OnInit, OnDestroy {
         if(this.r.snapshot.paramMap.get('path') == "%2F")
         {
           this.path = this.path + obj.id
-          this.userService.getFiles(+this.r.snapshot.paramMap.get('teacher'), this.r.snapshot.paramMap.get('path') + obj.id).subscribe(files => this.get(files));
+          this.fileService.getFiles(+this.r.snapshot.paramMap.get('teacher'), this.r.snapshot.paramMap.get('path') + obj.id).subscribe(files => this.get(files));
         }
         else
         {
           this.path = this.path + '/' + obj.id          
-          this.userService.getFiles(+this.r.snapshot.paramMap.get('teacher'), this.r.snapshot.paramMap.get('path') + "%2F" + obj.id).subscribe(files => this.get(files));
+          this.fileService.getFiles(+this.r.snapshot.paramMap.get('teacher'), this.r.snapshot.paramMap.get('path') + "%2F" + obj.id).subscribe(files => this.get(files));
         }
       }
     }

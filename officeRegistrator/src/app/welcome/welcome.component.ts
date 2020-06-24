@@ -2,7 +2,7 @@
 
 import { Component, OnInit } from '@angular/core';
 
-import { UserService, AuthenticationService } from '../_services'
+import { AuthenticationService } from '../_services'
 import { User } from '../_models';
 import { debounceTime } from 'rxjs/operators';
 

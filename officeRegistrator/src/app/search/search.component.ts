@@ -6,7 +6,7 @@ import {
   debounceTime, distinctUntilChanged, switchMap
  } from 'rxjs/operators';
 
-import { UserService } from '../_services';
+import { NewsService } from '../_services';
  
 @Component({
   selector: 'app-search',
@@ -16,9 +16,10 @@ import { UserService } from '../_services';
 export class SearchComponent implements OnInit {
 
   news$: Observable<News[]> = null;
+
   private searchTerms = new Subject<string>();
 
-  constructor(private userService: UserService) { }
+  constructor(private newsService: NewsService) { }
 
   // Push a search term into the observable stream.
   search(term: string): void {
@@ -34,7 +35,7 @@ export class SearchComponent implements OnInit {
       distinctUntilChanged(),
 
       // switch to new search observable each time the term changes
-      switchMap((term: string) => this.userService.searchNews(term)),
+      switchMap((term: string) => this.newsService.searchNews(term)),
     );
   }
 
