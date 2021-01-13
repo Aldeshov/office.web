@@ -12,7 +12,7 @@ export class NewsService {
 
   constructor(private http: HttpClient) { }
 
-  private BASE_URL = "http://127.0.0.1:8000"
+  private BASE_URL = "https://forcheck.herokuapp.com"
 
   private newsUrl = 'api/news';
   

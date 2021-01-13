@@ -12,7 +12,7 @@ export class AuthenticationService {
     private currentUserSubject: BehaviorSubject<User>;
     public currentUser: Observable<User>;
 
-    private BASE_URL = "http://127.0.0.1:8000"
+    private BASE_URL = "https://forcheck.herokuapp.com"
 
     constructor(private http: HttpClient) {
         this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
