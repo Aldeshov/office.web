@@ -15,4 +15,12 @@ export class FirstPageComponent implements OnInit {
   go(){
     this.router.navigate(['/login'])
   }
+
+  another(){
+    window.location.href = 'https://forcheck.herokuapp.com/'
+  }
+
+  about(){
+    window.location.href = 'https://github.com/Aldeshov'
+  }
 }

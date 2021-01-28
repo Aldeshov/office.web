@@ -6,13 +6,13 @@ import { catchError} from 'rxjs/operators';
 import { Course } from '../_models';
 import { Observable, of } from 'rxjs';
 
+import { BASE_URL } from './config'
+
 @Injectable({ providedIn: 'root' })
 
 export class CourseService {
 
   constructor(private http: HttpClient) { }
-
-  private BASE_URL = "https://forcheck.herokuapp.com"
 
   private coursesUrl = 'api/courses';
   
@@ -21,11 +21,11 @@ export class CourseService {
   };
 
   getCourse(id): Observable<Course> {
-    return this.http.get<Course>(`${this.BASE_URL}/${this.coursesUrl}/${id}`).pipe(catchError(this.handleError<Course>('coursesUrl')));
+    return this.http.get<Course>(`${BASE_URL}/${this.coursesUrl}/${id}`).pipe(catchError(this.handleError<Course>('coursesUrl')));
   }
 
   getCourses(): Observable<Course[]> {
-    return this.http.get<Course[]>(`${this.BASE_URL}/${this.coursesUrl}`).pipe(catchError(this.handleError<Course[]>('coursesUrl', [])));
+    return this.http.get<Course[]>(`${BASE_URL}/${this.coursesUrl}`).pipe(catchError(this.handleError<Course[]>('coursesUrl', [])));
   }
 
   private handleError<T> (operation = 'operation', result?: T) {

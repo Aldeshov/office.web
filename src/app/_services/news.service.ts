@@ -6,13 +6,13 @@ import { catchError} from 'rxjs/operators';
 import { News } from '../_models';
 import { Observable, of } from 'rxjs';
 
+import { BASE_URL } from './config'
+
 @Injectable({ providedIn: 'root' })
 
 export class NewsService {
 
   constructor(private http: HttpClient) { }
-
-  private BASE_URL = "https://forcheck.herokuapp.com"
 
   private newsUrl = 'api/news';
   
@@ -21,7 +21,7 @@ export class NewsService {
   };
 
   getNews(): Observable<News[]> {
-    return this.http.get<News[]>(`${this.BASE_URL}/${this.newsUrl}`).pipe(catchError(this.handleError<News[]>('newsUrl', [])));
+    return this.http.get<News[]>(`${BASE_URL}/${this.newsUrl}`).pipe(catchError(this.handleError<News[]>('newsUrl', [])));
   }
 
   searchNews(term: string): Observable<News[]> {
@@ -29,7 +29,7 @@ export class NewsService {
       // if not search term, return empty hero array.
       return of([]);
     }
-    return this.http.get<News[]>(`${this.BASE_URL}/${this.newsUrl}/?title=${term}`).pipe(
+    return this.http.get<News[]>(`${BASE_URL}/${this.newsUrl}/?title=${term}`).pipe(
       catchError(this.handleError<News[]>('search', []))
     );
   }

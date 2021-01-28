@@ -3,16 +3,15 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { User, LoginResponse } from '../_models';
-import { UserService } from './user.service';
+import { BASE_URL } from './config'
+
+import { User } from '../_models';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
     // For More Info https://jasonwatmore.com/post/2019/06/22/angular-8-jwt-authentication-example-tutorial#app-module-ts
     private currentUserSubject: BehaviorSubject<User>;
     public currentUser: Observable<User>;
-
-    private BASE_URL = "https://forcheck.herokuapp.com"
 
     constructor(private http: HttpClient) {
         this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
@@ -24,24 +23,22 @@ export class AuthenticationService {
     }
 
     login(username: string, password: string) {
-        return this.http.post<any>(`${this.BASE_URL}/api/login/`, { username, password })
-            .pipe(map(token => {
-                
-                let key = "JWT " + token.token;
+        return this.http.post<any>(`${BASE_URL}/api/login/`, { username, password })
+            .pipe(map(response => {
+                let key = "JWT " + response.token;
+
                 const headerDict = {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
-                    'Access-Control-Allow-Headers': 'Content-Type',
                     'Authorization': key,
-                    'token': token.token
                 }
 
                 const requestOptions = {                                                                                                                                                                                 
                     headers: new HttpHeaders(headerDict), 
                 };
 
-                return this.http.get<User>(`${this.BASE_URL}/api/user/`, requestOptions).pipe(map(user => {
-                    user.token = requestOptions.headers.get("token");
+                return this.http.get<User>(`${BASE_URL}/api/user/`, requestOptions).pipe(map(user => {
+                    user.token = response.token
                     localStorage.setItem('currentUser', JSON.stringify(user));
                     this.currentUserSubject.next(user);
                     return user;

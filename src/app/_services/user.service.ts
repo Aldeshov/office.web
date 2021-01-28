@@ -6,13 +6,13 @@ import { catchError} from 'rxjs/operators';
 import { User, Student } from '../_models';
 import { Observable, of } from 'rxjs';
 
+import { BASE_URL } from './config'
+
 @Injectable({ providedIn: 'root' })
 
 export class UserService {
     
     constructor(private http: HttpClient) { }
-
-    private BASE_URL = "https://forcheck.herokuapp.com"
 
     private userUrl = 'api/user';
     
@@ -23,11 +23,11 @@ export class UserService {
     };
 
     getUser(): Observable<User> {
-        return this.http.get<User>(`${this.BASE_URL}/${this.userUrl}`).pipe(catchError(this.handleError<User>('userUrl')));
+        return this.http.get<User>(`${BASE_URL}/${this.userUrl}`).pipe(catchError(this.handleError<User>('userUrl')));
     }
 
     getUserbyID(id: number): Observable<User> {
-        return this.http.get<User>(`${this.BASE_URL}/${this.userUrl}/${id}`).pipe(catchError(this.handleError<User>('userUrl')));
+        return this.http.get<User>(`${BASE_URL}/${this.userUrl}/${id}`).pipe(catchError(this.handleError<User>('userUrl')));
     }
 
     updateUser(updated: User, old_password: string, new_password1: string, new_password2: string): Observable<any>{
@@ -42,13 +42,13 @@ export class UserService {
             new_password1: new_password1,
             new_password2: new_password2
         }
-        return this.http.put<any>(`${this.BASE_URL}/${this.userUrl}/`, new_data, this.httpOptions).pipe(
+        return this.http.put<any>(`${BASE_URL}/${this.userUrl}/`, new_data, this.httpOptions).pipe(
             catchError(this.handleError<any>('updateUser'))
         );
     }
 
     getStudents(): Observable<Student[]> {
-        return this.http.get<Student[]>(`${this.BASE_URL}/${this.studentsUrl}`).pipe(catchError(this.handleError<Student[]>('studentsUrl', [])));
+        return this.http.get<Student[]>(`${BASE_URL}/${this.studentsUrl}`).pipe(catchError(this.handleError<Student[]>('studentsUrl', [])));
     }
     
     private handleError<T> (operation = 'operation', result?: T) {
