@@ -1,8 +1,9 @@
-html, body {
+html,
+body {
     margin: 0;
     width: 100%;
     height: 100%;
-    font-family: Calibri Light;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     background: url("assets/images/back.jpg");
 }
 
@@ -34,7 +35,6 @@ app-information {
     align-items: center;
     justify-content: space-evenly;
     background: url("assets/images/back.jpg");
-
 }
 
 app-welcome {
@@ -51,6 +51,15 @@ app-news {
 }
 
 app-schedule {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: nowrap;
+}
+
+app-title {
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;

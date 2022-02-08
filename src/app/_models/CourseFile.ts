@@ -6,5 +6,4 @@ export interface CourseFile
 	name: string;
 	path: string;
 	owner: User;
-	access: string;
 }

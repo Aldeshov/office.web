@@ -1,12 +1,10 @@
 .content {
-    font-family: Calibri;
     font-size: 32px;
     display: flex;
-    flex-direction: column;
     flex-wrap: wrap;
-    border: 1.5px solid rgb(85,85,85);
+    border: 1.5px solid rgb(85, 85, 85);
     border-radius: 15px;
-    min-width: 250px;
+    min-width: 200px;
     color: aliceblue;
     background-color: #1a1a1b;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
@@ -16,14 +14,13 @@
     width: 100%;
     display: flex;
     flex-direction: row;
-    align-items: center;
     justify-content: center;
-    border-bottom: 1px solid rgb(100,100,100);
+    border-bottom: 1px solid rgb(100, 100, 100);
     transition: 0.1s;
 }
 
 .el:hover {
-    background-color: rgb(100,100,100);
+    background-color: rgb(100, 100, 100);
     transition: 0.15s;
     cursor: pointer;
 }
@@ -41,8 +38,8 @@
 
 .a {
     margin: 10%;
-    font-family: Calibri;
     font-size: 72px;
+    color: rgb(177, 177, 177);
 }
 
 span {
@@ -50,6 +47,6 @@ span {
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
-    margin: 5% 20% 5% 20%;
+    margin: 5%;
     user-select: none;
 }

@@ -3,19 +3,19 @@
     border: 1px solid #343536;
     border-radius: 15px;
     color: rgb(200, 200, 200);
-    box-shadow: 0 0 10px rgba(0,0,0,0.7);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
 }
 
 .something {
-    transition: 0.3s; 
+    transition: 0.3s;
     color: black;
-    background-color: rgb(150,150,150);
+    background-color: rgb(150, 150, 150);
 }
 
 .something:hover {
     transition: 0.3s;
     cursor: pointer;
-    background-color: rgb(210,210,210);
+    background-color: rgb(210, 210, 210);
 }
 
 .days {
@@ -37,7 +37,8 @@
     justify-content: space-around;
 }
 
-.nothing, .something {
+.nothing,
+.something {
     border: 1px solid rgb(175, 175, 175);
     width: 150px;
     height: 50px;
@@ -59,7 +60,8 @@
     align-items: center;
 }
 
-.left, .x {
+.left,
+.x {
     border: none;
     display: flex;
     flex-direction: column;
@@ -91,7 +93,7 @@
 }
 
 #line {
-    width: 150px; 
+    width: 150px;
     height: 3px;
     position: relative;
     z-index: 10;
@@ -102,11 +104,27 @@
     border-top-right-radius: 15px;
 }
 
-#n06, #n106, #n206, #n306, #n406, #n506, #n606, #n706, #n806, #n906, #n1006, #n1106, #n1206 {
+#n06,
+#n106,
+#n206,
+#n306,
+#n406,
+#n506,
+#n606,
+#n706,
+#n806,
+#n906,
+#n1006,
+#n1106,
+#n1206 {
     border-right: none;
 }
 
 .ia {
     color: rgb(57, 70, 74);
     text-decoration: underline;
+}
+
+.object {
+    font-size: small;
 }

@@ -5,9 +5,8 @@ main {
     justify-content: space-around;
     border: 1px solid rgb(150, 150, 150);
     border-radius: 15px;
-    background-color: rgb(245,245,245);
-    box-shadow: 0 0 10px rgba(0,0,0,0.7);
-
+    background-color: rgb(245, 245, 245);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
 }
 
 .alert {
@@ -15,11 +14,9 @@ main {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    width: 200px;
     font-size: 14px;
     justify-content: space-around;
-    align-items: center;
-    padding: 5px;
+    padding: 20px 10px;
     color: black;
     margin-top: 10px;
     margin-bottom: 5px;
@@ -32,16 +29,16 @@ table {
 }
 
 .button {
-    border: 1px solid rgb(220,220,220);
+    border: 1px solid rgb(220, 220, 220);
     font-size: 14px;
-    background-color: rgb(245,245,245);
+    background-color: rgb(245, 245, 245);
     transition: 0.3s;
     border-radius: 5px;
     padding: 5px 10px 5px 10px;
 }
 
 .button:hover {
-    background-color: rgb(210,210,210);
+    background-color: rgb(210, 210, 210);
     transition: 0.3s;
     cursor: pointer;
 }
@@ -52,23 +49,23 @@ table {
 }
 
 .button:focus {
-  outline: none;
+    outline: none;
 }
 
 .button:active {
-    background-color: rgb(170,170,170);
-    border: 1px solid rgb(200,200,200);
+    background-color: rgb(170, 170, 170);
+    border: 1px solid rgb(200, 200, 200);
 }
 
 .input {
     border: none;
-    background-color: rgb(245,245,245);
-    border-bottom: 1px solid rgb(180,180,180);
+    background-color: rgb(245, 245, 245);
+    border-bottom: 1px solid rgb(180, 180, 180);
     transition: 0.2s;
 }
 
 .input:active {
-    background-color: rgb(210,210,210);
+    background-color: rgb(210, 210, 210);
 }
 
 .loading {
@@ -77,21 +74,6 @@ table {
     display: flex;
     align-items: center;
     justify-content: space-around;
-}
-
-.changed {
-    position: absolute;
-    top: 40%;
-    left: 39.5%;
-    font-size: 16px;
-    font-weight: 700;
-    z-index: 100;
-    padding: 25px;
-    border-radius: 20px;
-    border: 1px solid rgb(52, 110, 52);
-    background-color: rgb(55, 161, 55);
-    transition: 0.3s;
-    user-select: none;
 }
 
 .disable {

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '../_models/User';
-import { UserService, AuthenticationService } from '../_services';
-import { Router } from '@angular/router';
+import { UserService } from '../_services';
 import { first } from 'rxjs/operators';
 
 @Component({
@@ -11,63 +10,48 @@ import { first } from 'rxjs/operators';
 })
 
 export class InformationComponent implements OnInit {
-
-  u: User = null;
-
-  ok = true;
-
   loading = true;
+  error: string;
 
-  error: Error[] = [];
-  
-  constructor(private userService: UserService, private router: Router, private authenticate: AuthenticationService) { }
+  user: User = null;
+
+  constructor(private userService: UserService) { }
 
   ngOnInit(): void {
-    this.authenticate.currentUser.subscribe(u => {
-      this.u = u;
+    this.userService.getUser().subscribe(response => {
       this.loading = false;
+      this.user = response;
     });
   }
 
   save() {
-    let old_password = (<HTMLInputElement> document.getElementById("old")).value;
-    let new_password1 = (<HTMLInputElement> document.getElementById("new1")).value;
-    let new_password2 = (<HTMLInputElement> document.getElementById("new2")).value;
-    this.userService.updateUser(this.u, old_password, new_password1, new_password2).pipe(first()).subscribe(msg => {
-      this.error = [];
-      if(msg.ERROR)
-      {
-        if(msg.ERROR.old_password)
-        {
-          this.error.push({head: "Old Password", body: msg.ERROR.old_password})
-        }
-        if(msg.ERROR.new_password1)
-        {
-          this.error.push({head: "New Password", body: msg.ERROR.new_password1})
-        }
-        if(msg.ERROR.new_password2)
-        {
-          this.error.push({head: "Confirm Password", body: msg.ERROR.new_password2})
-        }
-        if(msg.ERROR.username)
-        {
-          this.error.push({head: "Login", body: msg.ERROR.username})
-        }
-        console.log(JSON.stringify(msg))
-      }
-      else
-      {
-        this.ok = false;
-        document.getElementById('main').classList.add('disable');
-        document.getElementById('ok').hidden = false;
-        this.authenticate.logout()
-        //this.router.navigate(['/login']);
-      }
-    });
-  }
-}
+    document.getElementById('main').classList.add('disable');
+    let old_password = (<HTMLInputElement>document.getElementById("old")).value;
+    let new_password1 = (<HTMLInputElement>document.getElementById("new1")).value;
+    let new_password2 = (<HTMLInputElement>document.getElementById("new2")).value;
 
-interface Error {
-  head: string;
-  body: string;
+    this.userService.updateUser(this.user, old_password, new_password1, new_password2).pipe(first())
+      .subscribe(_ => { location.reload() }, error => {
+        document.getElementById('main').classList.remove('disable');
+        if (error.errors.old_password) {
+          this.error = "Old Password: " + error.errors.old_password;
+          return;
+        }
+
+        if (error.errors.new_password1) {
+          this.error = "New Password: " + error.errors.new_password1;
+          return;
+        }
+
+        if (error.errors.new_password2) {
+          this.error = "Confirm Password: " + error.errors.new_password2;
+          return;
+        }
+
+        if (error.errors.username) {
+          this.error = "Login: " + error.errors.username;
+          return;
+        }
+      });
+  }
 }

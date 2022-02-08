@@ -1,12 +1,12 @@
-<div *ngIf="!loading" class="welcome">    
-    <app-header [name]="u.first_name"></app-header>
+<div *ngIf="!loading" class="welcome">
+    <app-header [name]="user.first_name"></app-header>
     <main>
-        <app-title [name]="u.first_name"></app-title>
+        <app-title [name]="user.first_name"></app-title>
         <app-news></app-news>
         <app-schedule></app-schedule>
     </main>
 </div>
 
 <div *ngIf="loading" class="loading">
-    <img src="../../assets/images/loading.gif" width="100px"/>
+    <img src="../../assets/images/loading.gif" width="100px" />
 </div>

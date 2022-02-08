@@ -7,27 +7,28 @@ import { AuthenticationService } from '../_services';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-    // For More Info https://jasonwatmore.com/post/2019/06/22/angular-8-jwt-authentication-example-tutorial#app-module-ts
     constructor(private authenticationService: AuthenticationService) { }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        return next.handle(request).pipe(catchError(err => {
-            if (err.status === 401) {
-                // auto logout if 401 response returned from api
+        return next.handle(request).pipe(catchError(response => {
+            console.error(response.message);
+
+            if (response.status === 401) {
                 this.authenticationService.logout();
-                location.reload(true);
+                location.reload();
             }
 
-            if (err.status === 400) {
-                return throwError("Username or Password Incorrect");
+            if (response.status === 0) {
+                return throwError({
+                    status: response.status,
+                    errors: response.statusText
+                });
             }
 
-            if (err.status === 404) {
-                return throwError("Not Found");
-            }
-
-            const error = err.error.message || err.statusText;
-            return throwError(error);
+            return throwError({
+                status: response.status,
+                errors: response.error
+            });
         }))
     }
 }

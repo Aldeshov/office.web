@@ -1,10 +1,7 @@
-//CopyRight Azat - unknown
-
 import { Component, OnInit } from '@angular/core';
 
-import { AuthenticationService } from '../_services'
+import { UserService } from '../_services'
 import { User } from '../_models';
-import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-welcome',
@@ -13,16 +10,15 @@ import { debounceTime } from 'rxjs/operators';
 })
 export class WelcomeComponent implements OnInit {
   
-  u: User = null;
-
   loading = true;
+  user: User = null;
 
-  constructor(private authenticate: AuthenticationService) { }
+  constructor(private userService: UserService) { }
   
   ngOnInit(): void {
-    this.authenticate.currentUser.pipe(debounceTime(300)).subscribe(u => {
-      this.u = u;
+    this.userService.getUser().subscribe(response => {
       this.loading = false;
+      this.user = response;
     });
   }
 }

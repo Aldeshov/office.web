@@ -3,7 +3,7 @@
     border: 1px solid #343536;
     border-radius: 15px;
     color: rgb(200, 200, 200);
-    box-shadow: 0 0 10px rgba(0,0,0,0.7);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
 }
 
 .name {
@@ -15,5 +15,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
-    min-width: 500px;
+    width: 40%;
+    min-width: 255px;
+    max-width: 640px;
 }

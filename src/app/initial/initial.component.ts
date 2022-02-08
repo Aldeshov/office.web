@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router'
 
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { AuthenticationService, UserService } from '../_services';
+import { AuthenticationService } from '../_services';
 import { first } from 'rxjs/operators';
 
 @Component({
@@ -20,20 +20,19 @@ export class InitialComponent implements OnInit {
   remember = false;
 
   constructor(
-    private userService: UserService, 
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService
-    ) { 
-        // redirect to home if already logged in
-        if (this.authenticationService.currentUserValue) { 
-          this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/welcome';
-          this.router.navigate([this.returnUrl]);
-      }
+  ) {
+    // redirect to home if already logged in
+    if (this.authenticationService.tokenValue) {
+      this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/welcome';
+      this.router.navigate([this.returnUrl]);
     }
+  }
 
-  ngOnInit(){
+  ngOnInit() {
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
@@ -43,28 +42,21 @@ export class InitialComponent implements OnInit {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/welcome';
   }
 
-  get f() { return this.loginForm.controls; }
+  get fields() { return this.loginForm.controls; }
 
   onSubmit() {
-      this.submitted = true;
-
-      // stop here if form is invalid
-      if (this.loginForm.invalid) {
-          return;
-      }
-
+    if (this.loginForm.valid) {
+      this.error = '';
       this.loading = true;
-      this.authenticationService.login(this.f.username.value, this.f.password.value)
-          .pipe(first())
-          .subscribe(
-              data => {
-                data.subscribe(user => {
-                  this.router.navigate([this.returnUrl]);
-                })
-              },
-              error => {
-                  this.error = error;
-                  this.loading = false;
-              });
+      this.submitted = true;
+      this.authenticationService.login(this.fields.username.value, this.fields.password.value).pipe(first())
+        .subscribe(
+          _ => { this.router.navigate([this.returnUrl]); },
+          error => {
+            this.loading = false;
+            this.submitted = false;
+            this.error = error.errors.non_field_errors || JSON.stringify(error.errors);
+          });
+    }
   }
 }

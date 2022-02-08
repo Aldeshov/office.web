@@ -2,20 +2,21 @@
     background-color: #1a1a1b;
     color: rgb(200, 200, 200);
     border: 1px solid #343536;
-    box-shadow: 0 0 10px rgba(0,0,0,0.7);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
 }
 
 .news {
     display: flex;
     flex-direction: column;
     width: 50%;
+    min-width: 350px;
     padding: 5px;
     border-radius: 15px;
     justify-content: center;
 }
 
 .new {
-    border: 1px solid rgb(56,56,56);
+    border: 1px solid rgb(56, 56, 56);
     margin-top: 5px;
     margin-top: 5px;
     border-radius: 15px;
@@ -27,7 +28,7 @@
     color: rgb(125, 125, 125);
     cursor: pointer;
     transition: 0.2s;
-    border: 1px solid rgb(100,100,100);
+    border: 1px solid rgb(100, 100, 100);
 }
 
 .green {

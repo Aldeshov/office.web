@@ -1,5 +1,5 @@
 <h3>News</h3>
-<div *ngIf="!loading" class="news block">
+<div *ngIf="!loading && news.length" class="news block">
     <div class="new" *ngFor="let n of news" id="end">
         <h3 class="green"> {{ n.title }} </h3>
         <h4> {{ n.body }} </h4>
@@ -7,5 +7,9 @@
 </div>
 
 <div *ngIf="loading" class="loading">
-    <img src="../../assets/images/loading.gif" width="50px"/>
+    <img src="../../assets/images/loading.gif" width="50px" />
+</div>
+
+<div *ngIf="!loading && !news.length" class="news block" style="text-align: center;">
+    <h4>No news</h4>
 </div>

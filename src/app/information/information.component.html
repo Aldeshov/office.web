@@ -1,4 +1,4 @@
-<app-header [name]="u.first_name"></app-header>
+<app-header *ngIf="!loading" [name]="user.first_name"></app-header>
 
 <main *ngIf="!loading" id="main">
     <h2>Information about User</h2>
@@ -8,7 +8,7 @@
                 <label>ID Student</label>
             </td>
             <td>
-                <input class="input" required [value]="u.id" disabled placeholder="ID" maxlength="64"/>
+                <input class="input" required [value]="user.id" disabled placeholder="ID" maxlength="64" />
             </td>
         </tr>
         <tr class="row">
@@ -16,7 +16,7 @@
                 <label>First Name</label>
             </td>
             <td>
-                <input class="input" type="text" placeholder="First Name" required [(ngModel)]="u.first_name"/>
+                <input class="input" type="text" placeholder="First Name" required [(ngModel)]="user.first_name" />
             </td>
         </tr>
         <tr class="row">
@@ -24,7 +24,7 @@
                 <label>Last Name</label>
             </td>
             <td>
-                <input class="input" type="text" placeholder="Last Name" required [(ngModel)]="u.last_name"/>
+                <input class="input" type="text" placeholder="Last Name" required [(ngModel)]="user.last_name" />
             </td>
         </tr>
         <tr class="row">
@@ -32,7 +32,7 @@
                 <label>E-Mail</label>
             </td>
             <td>
-                <input class="input" type="text" placeholder="email@example.com" required [(ngModel)]="u.email"/>
+                <input class="input" type="text" placeholder="email@example.com" required [(ngModel)]="user.email" />
             </td>
         </tr>
         <tr class="row">
@@ -40,7 +40,7 @@
                 <label>Login</label>
             </td>
             <td>
-                <input class="input" type="text" required [(ngModel)]="u.username" placeholder="Login" maxlength="64"/>
+                <input class="input" type="text" required [(ngModel)]="user.username" placeholder="Login" maxlength="64" />
             </td>
         </tr>
         <tr class="row">
@@ -48,7 +48,7 @@
                 <label>Old Password</label>
             </td>
             <td>
-                <input id="old" class="input" type="password" placeholder="Password" required maxlength="64"/>
+                <input id="old" class="input" type="password" placeholder="Password" required maxlength="64" />
             </td>
         </tr>
         <tr class="row">
@@ -56,7 +56,7 @@
                 <label>New Password</label>
             </td>
             <td>
-                <input id="new1" class="input" type="password" placeholder="New Password" required maxlength="64"/>
+                <input id="new1" class="input" type="password" placeholder="New Password" required maxlength="64" />
             </td>
         </tr>
         <tr class="row">
@@ -64,7 +64,7 @@
                 <label>Confirm Password</label>
             </td>
             <td>
-                <input id="new2" class="input" type="password" placeholder="New Password" required maxlength="64"/>
+                <input id="new2" class="input" type="password" placeholder="New Password" required maxlength="64" />
             </td>
         </tr>
         <tr>
@@ -76,16 +76,13 @@
             </td>
         </tr>
     </table>
-    <div *ngFor="let e of error" class="alert">
-        <span style="font-weight: 800;"> {{ e.head }}</span>
-        <span> {{ e.body }}</span>
+
+    <div *ngIf="error" class="alert">
+        <span style="font-weight: 800;">Error occured</span>
+        <span> {{ error }}</span>
     </div>
 </main>
 
 <div *ngIf="loading" class="loading">
-    <img src="../../assets/images/loading.gif" width="100px"/>
-</div>
-
-<div [hidden]="true" id="ok" class="changed">
-    <span>Information Saved! Please reload the page</span>
+    <img src="../../assets/images/loading.gif" width="100px" />
 </div>

@@ -1,11 +1,11 @@
-import { Teacher } from './Teacher';
+import { User } from '.';
 
 export interface Course 
 {
 	id: string;
 	name: string;
+	room: string;
 	credits: number;
 	schedule: number[][];
-	room: string;
-	teacher: Teacher;
+	teacher: User;
 }

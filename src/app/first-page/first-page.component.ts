@@ -17,7 +17,7 @@ export class FirstPageComponent implements OnInit {
   }
 
   another(){
-    window.location.href = 'https://forcheck.herokuapp.com/'
+    window.location.href = '/api'
   }
 
   about(){
