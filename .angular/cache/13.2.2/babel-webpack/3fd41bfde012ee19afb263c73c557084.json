@@ -1,1 +1,0 @@
-{"ast":null,"code":"export * from './authentication.service';\nexport * from './user.service';\nexport * from './course.service';\nexport * from './news.service';\nexport * from './file.service';","map":null,"metadata":{},"sourceType":"module"}
