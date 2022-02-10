@@ -2,7 +2,7 @@ import { User } from './User';
 
 export interface CourseFile 
 {
-	id: string;
+	id: number;
 	name: string;
 	path: string;
 	owner: User;

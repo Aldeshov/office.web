@@ -1,4 +1,4 @@
-//Copyright Azat https://github.com/Aldeshov
+//Copyright Azat https://github.com/Aldeshov/office.web
 
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
@@ -28,7 +28,7 @@ export class CourseFilesComponent implements OnInit, OnDestroy {
   dirName = "";
   students = [];
 
-  forf = "";
+  fileID = 0;
 
   //For Form adding file
   addFile = false;
@@ -79,10 +79,7 @@ export class CourseFilesComponent implements OnInit, OnDestroy {
       this.fileService.getFiles(+this.r.snapshot.paramMap.get('teacher'), this.r.snapshot.paramMap.get('path')).subscribe(response => {
         this.func(response);
         this.loading = false;
-      },
-        _ => {
-          this.router.navigate(['/student-files/0/%2F']);
-        })
+      }, _ => { this.router.navigate(['/student-files/0/%2F']) })
     })
   }
 
@@ -99,7 +96,7 @@ export class CourseFilesComponent implements OnInit, OnDestroy {
       let teachs = []
       for (let i = 0; i < files.length; i++) {
         if (teachs.find(t => t == files[i].owner.id) == undefined) {
-          this.objects.push({ id: files[i].owner.id + "", name: files[i].owner.first_name + " " + files[i].owner.last_name, is_Dir: true, teacher: files[i].owner.id + "", path: '/%2F', ico: "../../assets/images/types/teacher.ico" });
+          this.objects.push({ id: files[i].owner.id + "", fileID: files[i].id, name: files[i].owner.first_name + " " + files[i].owner.last_name, is_Dir: true, teacher: files[i].owner.id + "", path: '/%2F', ico: "../../assets/images/types/teacher.ico" });
           teachs.push(files[i].owner.id);
         }
       }
@@ -129,12 +126,12 @@ export class CourseFilesComponent implements OnInit, OnDestroy {
     this.userService.getStudents().subscribe(response => this.students = response);
   }
 
-  edit(name: string) {
+  edit(id = 0, name = "") {
     this.editFile = true;
     document.getElementById('main').classList.add('disable');
     this.userService.getStudents().subscribe(response => this.students = response);
     this.fileName = name;
-    this.forf = name;
+    this.fileID = id;
   }
 
   addDir() {
@@ -179,14 +176,14 @@ export class CourseFilesComponent implements OnInit, OnDestroy {
         path += this.dirs[i];
       }
       if (this.addFile) {
-        this.fileService.addFile(this.user.id, path, this.fileName, students).subscribe(_ => {
+        this.fileService.addFile(this.fileName, path, students).subscribe(_ => {
           this.addFile = false;
           document.getElementById('main').classList.remove('disable');
           location.reload();
         })
       }
       if (this.editFile) {
-        this.fileService.updateFile(this.user.id, encodeURIComponent(this.path), this.forf, students, this.fileName, path).subscribe(_ => {
+        this.fileService.updateFile(this.fileID, this.fileName, path, students).subscribe(_ => {
           this.editFile = false;
           document.getElementById('main').classList.remove('disable');
           location.reload();
@@ -196,7 +193,7 @@ export class CourseFilesComponent implements OnInit, OnDestroy {
   }
 
   delete() {
-    this.fileService.deleteFile(this.user.id, encodeURIComponent(this.path), this.forf).subscribe(_ => {
+    this.fileService.deleteFile(this.fileID).subscribe(_ => {
       this.editFile = false;
       document.getElementById('main').classList.remove('disable');
       location.reload();
@@ -250,7 +247,7 @@ export class CourseFilesComponent implements OnInit, OnDestroy {
     // If this is a File
     else {
       if (this.user.is_teacher) {
-        this.edit(obj.name);
+        this.edit(obj.fileID, obj.name);
       }
       // Thats just sample. 
       // Here we can get file from server
@@ -321,7 +318,7 @@ export class CourseFilesComponent implements OnInit, OnDestroy {
           temp = temp.substr(0, 7) + "..." + temp.substr(temp.length - 4, 4);
         }
         // Let push our Object: File
-        this.objects.push({ id: files[i].name, name: temp, is_Dir: false, teacher: this.r.snapshot.paramMap.get('teacher'), path: this.r.snapshot.paramMap.get('path') + "%2F" + files[i].id, ico: icon });
+        this.objects.push({ id: files[i].name, fileID: files[i].id, name: temp, is_Dir: false, teacher: this.r.snapshot.paramMap.get('teacher'), path: this.r.snapshot.paramMap.get('path') + "%2F" + files[i].id, ico: icon });
       }
       // Here we get Directory
       else {
@@ -357,11 +354,11 @@ export class CourseFilesComponent implements OnInit, OnDestroy {
           // (2) otherwise we add (For example "'/Directory' + '/' + 'New Directory Name'"))
           if (this.r.snapshot.paramMap.get('path') == "%2F") {
             // (1)
-            this.objects.push({ id: full, name: temp, is_Dir: true, teacher: this.r.snapshot.paramMap.get('teacher'), path: this.r.snapshot.paramMap.get('path') + full, ico: "../../assets/images/types/folder.ico" });
+            this.objects.push({ id: full, fileID: 0, name: temp, is_Dir: true, teacher: this.r.snapshot.paramMap.get('teacher'), path: this.r.snapshot.paramMap.get('path') + full, ico: "../../assets/images/types/folder.ico" });
           }
           else {
             // (2)
-            this.objects.push({ id: full, name: temp, is_Dir: true, teacher: this.r.snapshot.paramMap.get('teacher'), path: this.r.snapshot.paramMap.get('path') + "%2F" + full, ico: "../../assets/images/types/folder.ico" });
+            this.objects.push({ id: full, fileID: 0, name: temp, is_Dir: true, teacher: this.r.snapshot.paramMap.get('teacher'), path: this.r.snapshot.paramMap.get('path') + "%2F" + full, ico: "../../assets/images/types/folder.ico" });
           }
         }
       }
@@ -372,7 +369,7 @@ export class CourseFilesComponent implements OnInit, OnDestroy {
     this.addFile = false;
     this.editFile = false;
     this.fileName = "";
-    this.forf = "";
+    this.fileID = 0;
     document.getElementById('main').classList.remove('disable');
   }
 }
@@ -380,6 +377,7 @@ export class CourseFilesComponent implements OnInit, OnDestroy {
 // Object interface for Files and Directories or Teachers(For Student)
 interface Object {
   id: string;
+  fileID: number;
   name: string;
   is_Dir: boolean;
   teacher: string;
