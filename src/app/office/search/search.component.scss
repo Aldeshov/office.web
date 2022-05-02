@@ -1,0 +1,30 @@
+nb-list-item {
+  -webkit-filter: brightness(100%);
+  -webkit-transition: all 300ms ease;
+  -moz-transition: all 300ms ease;
+  -o-transition: all 300ms ease;
+  -ms-transition: all 300ms ease;
+  transition: all 300ms ease;
+  user-select: none;
+}
+
+nb-list-item:hover {
+  background-color: #1a315d;
+  -webkit-filter: brightness(70%);
+  -webkit-transition: all 300ms ease;
+  -moz-transition: all 300ms ease;
+  -o-transition: all 300ms ease;
+  -ms-transition: all 300ms ease;
+  transition: all 300ms ease;
+  cursor: pointer;
+}
+
+nb-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+nb-card {
+  max-width: 512px;
+}

@@ -1,0 +1,82 @@
+<main id="main">
+  <h3>User Information</h3>
+  <table>
+    <tr class="row">
+      <td>
+        <label>ID Person</label>
+      </td>
+      <td>
+        <input class="input" required [value]="user.id" disabled placeholder="ID" maxlength="64"/>
+      </td>
+    </tr>
+    <tr class="row">
+      <td>
+        <label>First Name</label>
+      </td>
+      <td>
+        <input class="input" type="text" placeholder="First Name" required [(ngModel)]="user.first_name"/>
+      </td>
+    </tr>
+    <tr class="row">
+      <td>
+        <label>Last Name</label>
+      </td>
+      <td>
+        <input class="input" type="text" placeholder="Last Name" required [(ngModel)]="user.last_name"/>
+      </td>
+    </tr>
+    <tr class="row">
+      <td>
+        <label>E-Mail</label>
+      </td>
+      <td>
+        <input class="input" type="text" placeholder="email@example.com" required [(ngModel)]="user.email"/>
+      </td>
+    </tr>
+    <tr class="row">
+      <td>
+        <label>Login</label>
+      </td>
+      <td>
+        <input class="input" type="text" required [(ngModel)]="user.username" placeholder="Login" maxlength="64"/>
+      </td>
+    </tr>
+    <tr class="row">
+      <td>
+        <label>Old Password</label>
+      </td>
+      <td>
+        <input id="old" class="input" type="password" placeholder="Password" required maxlength="64"/>
+      </td>
+    </tr>
+    <tr class="row">
+      <td>
+        <label>New Password</label>
+      </td>
+      <td>
+        <input id="new1" class="input" type="password" placeholder="New Password" required maxlength="64"/>
+      </td>
+    </tr>
+    <tr class="row">
+      <td>
+        <label>Confirm Password</label>
+      </td>
+      <td>
+        <input id="new2" class="input" type="password" placeholder="New Password" required maxlength="64"/>
+      </td>
+    </tr>
+    <tr>
+      <td>
+
+      </td>
+      <td>
+        <input id="save" type="button" required class="button" (click)="save()" value="Save"/>
+      </td>
+    </tr>
+  </table>
+
+  <div *ngIf="error" class="alert">
+    <span style="font-weight: 800;">Error occurred</span>
+    <span> {{ error }}</span>
+  </div>
+</main>

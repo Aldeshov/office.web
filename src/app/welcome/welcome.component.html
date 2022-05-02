@@ -1,12 +1,5 @@
-<div *ngIf="!loading" class="welcome">
-    <app-header [name]="user.first_name"></app-header>
-    <main>
-        <app-title [name]="user.first_name"></app-title>
-        <app-news></app-news>
-        <app-schedule></app-schedule>
-    </main>
-</div>
-
-<div *ngIf="loading" class="loading">
-    <img src="../../assets/images/loading.gif" width="100px" />
-</div>
+<nb-layout>
+  <nb-layout-column>
+    <router-outlet></router-outlet>
+  </nb-layout-column>
+</nb-layout>

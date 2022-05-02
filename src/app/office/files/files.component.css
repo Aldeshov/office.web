@@ -1,0 +1,176 @@
+header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: 15px;
+  padding: 3px;
+}
+
+main {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.dir {
+  font-weight: 700;
+}
+
+.obj {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-around;
+
+  color: blanchedalmond;
+  border: 1px solid #343536;
+  background-color: #1a1a1b;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+
+  margin: 5px;
+  padding: 2px;
+  border-radius: 15px;
+
+  min-width: 125px;
+  min-height: 75px;
+
+  transition: 200ms;
+  user-select: none;
+}
+
+.obj:hover {
+  border: 1px solid rgb(100, 100, 100);
+  background-color: rgb(50, 50, 50);
+  transition: 200ms;
+  cursor: pointer;
+}
+
+.obj-type {
+  user-select: none;
+}
+
+.obj:active {
+  background-color: rgb(120, 120, 120);
+}
+
+.link {
+  background-color: #1a1a1b;
+  border: 1px solid #343536;
+  color: blanchedalmond;
+  border-radius: 10px;
+  margin-right: 10px;
+  user-select: none;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+}
+
+.link:hover {
+  cursor: pointer;
+  border: 1px solid rgb(100, 100, 100);
+  background-color: rgb(50, 50, 50);
+}
+
+.content {
+  position: absolute;
+  top: 55px;
+  left: 55px;
+}
+
+.cn {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.second {
+  top: -20px;
+  width: 3px;
+  transform: rotate(90deg);
+}
+
+.disable {
+  opacity: 0.5;
+  pointer-events: none;
+  transition: 0.2s;
+}
+
+.form {
+  position: fixed;
+  top: 35%;
+  left: 30%;
+  width: 30%;
+  min-width: 500px;
+  min-height: 300px;
+  height: 40%;
+  background-color: #1a1a1b;
+  border: 1px solid #343536;
+  border-radius: 15px;
+  color: blanchedalmond;
+  padding: 20px;
+  font-weight: 800;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+}
+
+table {
+  width: 100%;
+  height: 100%;
+}
+
+.flex {
+  display: flex;
+  flex-direction: column;
+}
+
+.input {
+  border: none;
+  background-color: #1a1a1b;
+  border-bottom: 1px solid rgb(120, 120, 120);
+  color: silver;
+  transition: 0.3s;
+}
+
+.input:active {
+  transition: 0.3s;
+  background-color: #343536;
+}
+
+input:focus {
+  outline: none;
+  border-bottom: 2px solid rgb(120, 120, 120);
+}
+
+.button {
+  border: 1px solid rgb(220, 220, 220);
+  font-size: 14px;
+  background-color: rgb(245, 245, 245);
+  transition: 0.3s;
+  border-radius: 5px;
+  padding: 5px 10px 5px 10px;
+}
+
+.button:hover {
+  background-color: rgb(210, 210, 210);
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+select {
+  border: 1px solid #343536;
+  border-radius: 5px;
+  background-color: #1a1a1b;
+  color: aliceblue;
+  min-width: 100px;
+  padding: 0 5px 0 5px;
+}
+
+.loading {
+  pointer-events: none;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}

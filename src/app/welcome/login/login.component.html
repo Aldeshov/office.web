@@ -1,0 +1,37 @@
+<nb-card [accent]="!error ? 'info' : 'danger'">
+  <nb-card-header>
+    <h2 [style.text-align]="'center'">Log in</h2>
+  </nb-card-header>
+  <nb-card-body>
+    <form ngForm [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <nb-form-field>
+        <nb-icon nbPrefix icon="at-outline" pack="eva"></nb-icon>
+        <input nbInput fullWidth id="username" type="text" formControlName="username" placeholder="Username"
+               [status]="!usernameError() ? 'primary' : 'danger'"
+               [ngClass]="{ 'is-invalid': submitted && fields.username.errors && fields.username.errors.required}"/>
+      </nb-form-field>
+      <div class="subtitle-2" *ngIf="usernameError()" [style.color]="'red'" [style.margin-bottom]="20">
+        Username is required
+      </div>
+      <nb-form-field>
+        <input nbInput fullWidth id="password" [type]="getInputType()" formControlName="password" placeholder="Password"
+               [status]="!passwordError() ? 'primary' : 'danger'"
+               [ngClass]="{ 'is-invalid': submitted && fields.password.errors && fields.password.errors.required}"/>
+        <button nbSuffix nbButton ghost (click)="toggleShowPassword($event)">
+          <nb-icon [icon]="showPassword ? 'eye-outline' : 'eye-off-2-outline'" pack="eva"
+                   [attr.aria-label]="showPassword ? 'hide password' : 'show password'">
+          </nb-icon>
+        </button>
+      </nb-form-field>
+      <div class="subtitle-2" *ngIf="passwordError()" [style.color]="'red'" [style.margin-bottom]="20">
+        Password is required
+      </div>
+      <nb-alert *ngIf="error" status="danger" closable (close)="error = ''">{{error}}</nb-alert>
+      <button class="submit" nbButton outline fullWidth type="submit" status="primary" [disabled]="loading">Login
+      </button>
+    </form>
+  </nb-card-body>
+  <nb-card-footer>
+    <span>Office api authentication</span>
+  </nb-card-footer>
+</nb-card>

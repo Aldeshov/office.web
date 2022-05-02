@@ -1,0 +1,19 @@
+app-news, app-schedule, app-title {
+  display: flex;
+  justify-content: space-around;
+}
+
+main {
+  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.loading {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}

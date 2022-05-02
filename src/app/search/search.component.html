@@ -1,9 +1,0 @@
-<input #searchBox id="search-box" (input)="search(searchBox.value)" type="text" class="search" placeholder="Search">
-<div class="search-btn">
-    <span>go</span>
-</div>
-<ul class="search-result">
-    <li *ngFor="let n of news$ | async" class="row">
-        {{n.title}}
-    </li>
-</ul>

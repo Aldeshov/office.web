@@ -1,0 +1,12 @@
+<nb-card [style.width]="'1024px'" [style.max-width]="'90%'">
+  <nb-card-header>
+    <h3>News</h3>
+  </nb-card-header>
+  <nb-card-body [nbSpinner]="loading" nbSpinnerStatus="primary">
+    <nb-card *ngFor="let n of news">
+      <nb-card-header [style.color]="'cornflowerblue'">{{ n.title }}</nb-card-header>
+      <nb-card-body>{{ n.body }}</nb-card-body>
+    </nb-card>
+    <h6 *ngIf="!loading && !news.length" style="text-align: center;">No news</h6>
+  </nb-card-body>
+</nb-card>

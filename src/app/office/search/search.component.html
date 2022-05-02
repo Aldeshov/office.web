@@ -1,0 +1,15 @@
+<nb-search type="rotate-layout"></nb-search>
+
+<nb-card *ngIf="value" size="small" [style.position]="'fixed'">
+  <nb-card-header>
+    Search results for: {{value}}
+    <button nbButton outline ghost status="danger" (click)="value = ''">
+      <nb-icon icon="close-circle-outline"></nb-icon>
+    </button>
+  </nb-card-header>
+  <nb-list>
+    <nb-list-item *ngFor="let n of news$ | async">
+      {{n.title}}
+    </nb-list-item>
+  </nb-list>
+</nb-card>

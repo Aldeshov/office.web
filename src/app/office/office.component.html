@@ -1,0 +1,42 @@
+<nb-layout>
+  <nb-sidebar fixed left tag="left" [state]="menuExpanded ? 'expanded' : 'collapsed'">
+    <nb-menu [items]="items"></nb-menu>
+  </nb-sidebar>
+  <nb-layout-header fixed>
+    <main class="header-container" [style.flex-grow]="1">
+      <app-search></app-search>
+      <button nbButton outline status="success" size="small" (click)="menuExpanded = !menuExpanded"
+              [style.margin]="'auto'">
+        <nb-icon icon="menu-2-outline"></nb-icon>
+        Menu
+      </button>
+      <button class="additional" nbButton outline status="info" size="small" [style.margin]="'auto'">
+        <nb-icon icon="star"></nb-icon>
+        About
+      </button>
+      <button class="additional" nbButton outline size="small"
+              [nbSpinner]="loading" nbSpinnerStatus="primary" routerLink="information"
+              [status]="user ? 'primary' : 'basic'"
+              [style.margin]="'5px auto'"
+              [style.text-transform]="'none'">
+        <nb-user [name]="user ? user.first_name + ' ' + user.last_name : 'Information'"
+                 title="Click to change information">
+        </nb-user>
+      </button>
+    </main>
+  </nb-layout-header>
+  <nb-layout-column [nbSpinner]="loading" nbSpinnerStatus="primary">
+    <router-outlet *ngIf="user" (activate)="onOutletLoaded($event)"></router-outlet>
+  </nb-layout-column>
+  <nb-layout-footer>
+    <span class="item-body">
+      <span class="subtitle">
+        Office
+      </span>
+      | © Azat Aldeshov |
+      <span class="subtitle-2">
+        2019-2022
+      </span>
+    </span>
+  </nb-layout-footer>
+</nb-layout>
